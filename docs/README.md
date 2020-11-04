@@ -21,3 +21,28 @@ To update the sequence diagrams in `./docs/out`, ensure you have the [PlantUML v
 1. `CMD + Shift + P`
 2. Select `PlantUML: Export Workspace Diagrams`
 3. Wait for the export to complete, and commit the changes
+
+
+``` ts
+export default {
+  name: 'MyComponent',
+  // ...
+}
+```
+
+
+::: tip
+This is a tip
+:::
+
+::: warning
+This is a warning
+:::
+
+::: danger
+This is a dangerous warning
+:::
+
+::: details
+This is a details block, which does not work in IE / Edge
+:::
