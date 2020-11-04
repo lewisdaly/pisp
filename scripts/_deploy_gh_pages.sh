@@ -9,7 +9,7 @@ set -eux
 
 npm run docs:build
 
-cd ${DIR}/docs/.vuepress/dist
+cd ${DIR}/../docs/.vuepress/dist
 
 git init
 git add -A
