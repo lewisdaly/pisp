@@ -18,6 +18,7 @@
     "docker:clean:all": "docker rm -f $(docker ps -a -q); docker volume rm (docker volume ls -q)",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs",
+    "docs:deploy": "./scripts/_deploy_gh_pages.sh",
     "lint": "eslint ./src/**/*.ts *.js",
     "move:ttk-thirdparty:api": "cp ./src/interface/ttk-thirdparty-api.yaml ./docker-contract/ml-testing-toolkit/spec_files/api_definitions/thirdparty_pisp/api_spec.yaml",
     "pretest": "npm run build",
