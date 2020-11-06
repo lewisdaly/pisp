@@ -1,8 +1,8 @@
 openapi: 3.0.2
 info:
-  title: Thirdparty-DFSP API
+  title: Thirdparty-PISP API
   version: 0.1.0
-  description: A Mojaloop API for thirdparty interactions between `DFSPs` (Digital Financial Service Providers) and a Mojaloop Switch.
+  description: A Mojaloop API for thirdparty interactions between `PISPs` (Payment Initiation Service Providers) and a Mojaloop Switch.
 servers:
   - url: 'http://localhost:15000'
     description: Local TTK server (uses test data)
@@ -17,7 +17,7 @@ paths:
         information regarding the requested transfer party,
         identified by `{Type}` and `{ID}`.
 
-        Switch(Account Lookup Service) -> DFSP.
+        PISP -> Switch(Account Lookup Service).
       tags:
         - parties
       parameters:
@@ -29,7 +29,6 @@ paths:
             type: string
           description: 'The type of the party identifier. For example, `MSISDN`, `PERSONAL_ID`.'
         - $ref: '#/paths/~1consents/post/parameters/5'
-        - $ref: '#/paths/~1consents/post/parameters/6'
       responses:
         '202':
           $ref: '#/paths/~1consents/post/responses/202'
@@ -52,9 +51,9 @@ paths:
     put:
       description: |
         The callback `PUT /parties/{Type}/{ID}` is used to inform the
-        Switch of a successful result of the Party information lookup.
+        PISP of a successful result of the Party information lookup.
 
-        DFSP -> Switch(Account Lookup Service).
+        Switch(Account Lookup Service) -> PISP.
       summary: Return party information
       tags:
         - parties
@@ -277,6 +276,114 @@ paths:
           $ref: '#/paths/~1consents/post/responses/501'
         '503':
           $ref: '#/paths/~1consents/post/responses/503'
+  '/thirdpartyRequests/transactions/{ID}':
+    patch:
+      tags:
+        - thirdpartyRequests
+        - sampled
+      operationId: NotifyThirdpartyTransactionRequests
+      summary: NotifyThirdpartyTransactionRequests
+      description: |
+        The HTTP request `PATCH /thirdpartyRequests/transactions/{ID}` is used to
+        notify a thirdparty of the outcome of a transaction request.
+
+        Switch(Thirdparty API Adapter) -> PISP
+      parameters:
+        - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
+        - $ref: '#/paths/~1consents/post/parameters/1'
+        - $ref: '#/paths/~1consents/post/parameters/2'
+        - $ref: '#/paths/~1consents/post/parameters/3'
+        - $ref: '#/paths/~1consents/post/parameters/5'
+        - $ref: '#/paths/~1consents/post/parameters/6'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: ThirdpartyRequestsTransactionsIDPatchResponse
+              type: object
+              description: 'The object sent in the PATCH /thirdpartyRequests/transactions/{ID} callback.'
+              properties:
+                fulfilment:
+                  title: IlpFulfilment
+                  type: string
+                  pattern: '^[A-Za-z0-9-_]{43}$'
+                  maxLength: 48
+                  description: Fulfilment that must be attached to the transfer by the Payee.
+                  example: WLctttbu2HvTsa1XWvUoGRcQozHsqeu9Ahl2JW9Bsu8
+                completedTimestamp:
+                  $ref: '#/paths/~1consents/post/requestBody/content/application~1json/schema/properties/revokedAt'
+                transferState:
+                  title: TransferState
+                  type: string
+                  enum:
+                    - RECEIVED
+                    - RESERVED
+                    - COMMITTED
+                    - ABORTED
+                  description: |
+                    Below are the allowed values for the enumeration.
+                    - RECEIVED - Next ledger has received the transfer.
+                    - RESERVED - Next ledger has reserved the transfer.
+                    - COMMITTED - Next ledger has successfully performed the transfer.
+                    - ABORTED - Next ledger has aborted the transfer due to a rejection or
+                    failure to perform the transfer.
+                  example: RESERVED
+                extensionList:
+                  title: ExtensionList
+                  type: object
+                  description: |
+                    Data model for the complex type ExtensionList.
+                    An optional list of extensions, specific to deployment.
+                  properties:
+                    extension:
+                      type: array
+                      items:
+                        title: Extension
+                        type: object
+                        description: Data model for the complex type Extension.
+                        properties:
+                          key:
+                            title: ExtensionKey
+                            type: string
+                            minLength: 1
+                            maxLength: 32
+                            description: Extension key.
+                          value:
+                            title: ExtensionValue
+                            type: string
+                            minLength: 1
+                            maxLength: 128
+                            description: Extension value.
+                        required:
+                          - key
+                          - value
+                      minItems: 1
+                      maxItems: 16
+                      description: Number of Extension elements.
+                  required:
+                    - extension
+              required:
+                - transferState
+      responses:
+        '200':
+          $ref: '#/paths/~1consents~1%7BID%7D/put/responses/200'
+        '400':
+          $ref: '#/paths/~1consents/post/responses/400'
+        '401':
+          $ref: '#/paths/~1consents/post/responses/401'
+        '403':
+          $ref: '#/paths/~1consents/post/responses/403'
+        '404':
+          $ref: '#/paths/~1consents/post/responses/404'
+        '405':
+          $ref: '#/paths/~1consents/post/responses/405'
+        '406':
+          $ref: '#/paths/~1consents/post/responses/406'
+        '501':
+          $ref: '#/paths/~1consents/post/responses/501'
+        '503':
+          $ref: '#/paths/~1consents/post/responses/503'
   /thirdpartyRequests/transactions:
     post:
       tags:
@@ -286,9 +393,9 @@ paths:
       summary: CreateThirdpartyTransactionRequests
       description: |
         The HTTP request `POST /thirdpartyRequests/transactions` is used to request the creation of a third party transaction.
-        Called by a Switch to initiate initiate the DFSP quoting process.
+        Called by a PISP to initiate a third party transaction flow.
 
-        Switch(Thirdparty API Adapter) -> DFSP
+        PISP -> Switch(Thirdparty API Adapter)
       parameters:
         - $ref: '#/paths/~1consents/post/parameters/0'
         - $ref: '#/paths/~1consents/post/parameters/1'
@@ -537,17 +644,20 @@ paths:
           $ref: '#/paths/~1consents/post/responses/503'
   /authorizations:
     post:
-      operationId: OutboundAuthorizationsPost
-      summary: Outbound Authorizations endpoint
+      operationId: AuthorizationPostRequest
+      summary: AuthorizationPostRequest
       description: |
-        DFSP Requests Authorization of Transaction from the End User.
-
-        DFSP -> Switch
+        Switch -> PISP
       parameters:
-        - $ref: '#/paths/~1consents/post/parameters/0'
-        - $ref: '#/paths/~1consents/post/parameters/1'
         - $ref: '#/paths/~1consents/post/parameters/2'
         - $ref: '#/paths/~1consents/post/parameters/3'
+        - $ref: '#/paths/~1consents/post/parameters/4'
+        - $ref: '#/paths/~1consents/post/parameters/5'
+        - $ref: '#/paths/~1consents/post/parameters/6'
+        - $ref: '#/paths/~1consents/post/parameters/7'
+        - $ref: '#/paths/~1consents/post/parameters/8'
+        - $ref: '#/paths/~1consents/post/parameters/9'
+        - $ref: '#/paths/~1consents/post/parameters/10'
       requestBody:
         description: Authorization request details
         required: true
@@ -835,39 +945,7 @@ paths:
                       description: Condition that must be attached to the transfer by the Payer.
                       example: f5sqb7tBTWPd5Y8BDFdMm9BJR_MNI4isf8p8n4D5pHA
                     extensionList:
-                      title: ExtensionList
-                      type: object
-                      description: |
-                        Data model for the complex type ExtensionList.
-                        An optional list of extensions, specific to deployment.
-                      properties:
-                        extension:
-                          type: array
-                          items:
-                            title: Extension
-                            type: object
-                            description: Data model for the complex type Extension.
-                            properties:
-                              key:
-                                title: ExtensionKey
-                                type: string
-                                minLength: 1
-                                maxLength: 32
-                                description: Extension key.
-                              value:
-                                title: ExtensionValue
-                                type: string
-                                minLength: 1
-                                maxLength: 128
-                                description: Extension value.
-                            required:
-                              - key
-                              - value
-                          minItems: 1
-                          maxItems: 16
-                          description: Number of Extension elements.
-                      required:
-                        - extension
+                      $ref: '#/paths/~1thirdpartyRequests~1transactions~1%7BID%7D/patch/requestBody/content/application~1json/schema/properties/extensionList'
                   required:
                     - transferAmount
                     - expiration
@@ -900,162 +978,6 @@ paths:
           $ref: '#/paths/~1consents/post/responses/501'
         '503':
           $ref: '#/paths/~1consents/post/responses/503'
-  '/thirdpartyRequests/transactions/{ID}/authorizations':
-    post:
-      operationId: VerifyThirdPartyAuthorization
-      summary: VerifyThirdPartyAuthorization
-      description: |
-        The HTTP request `POST /thirdpartyRequests/transactions/{id}/authorizations`
-        is used by the DFSP to verify a third party authorization.
-
-        DFSP -> Switch
-      parameters:
-        - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
-      requestBody:
-        description: The thirdparty authorization details to verify
-        required: true
-        content:
-          application/json:
-            schema:
-              title: ThirdpartyRequestsTransactionsIDAuthorizationsPostRequest
-              type: object
-              description: 'The object sent in the POST /thirdpartyRequests/transactions/{id}/authorizations request.'
-              properties:
-                challenge:
-                  type: string
-                  description: Base64 encoded binary string - the original challenge.
-                value:
-                  allOf:
-                    - $ref: '#/paths/~1thirdpartyRequests~1transactions~1%7BID%7D~1authorizations/put/requestBody/content/application~1json/schema/properties/value/allOf/0'
-                  description: Base64 encoded binary string - the signed challenge
-                consentId:
-                  allOf:
-                    - $ref: '#/paths/~1consentRequests/post/requestBody/content/application~1json/schema/properties/id'
-                  description: |
-                    Common ID between the PISP and FSP for the Consent object This tells DFSP and auth-service which constent allows the PISP to initiate transaction.
-                sourceAccountId:
-                  allOf:
-                    - $ref: '#/paths/~1thirdpartyRequests~1transactions/post/requestBody/content/application~1json/schema/properties/sourceAccountId/allOf/0'
-                  description: 'DFSP specific account identifiers, e.g. `dfspa.alice.1234`'
-                status:
-                  type: string
-                  enum:
-                    - PENDING
-                  description: The status of the authorization. This MUST be PENDING for a POST request
-              required:
-                - challenge
-                - value
-                - consentId
-                - sourceAccountId
-                - status
-            example:
-              challenge: <QuoteResponse object>
-              value: <base64 encoded binary - the signed quote response object>
-              consentId: 8d34f91d-d078-4077-8263-2c0498dhbjr
-              sourceAccountId: dfspa.alice.1234
-              status: PENDING
-      responses:
-        '202':
-          $ref: '#/paths/~1consents/post/responses/202'
-        '400':
-          $ref: '#/paths/~1consents/post/responses/400'
-        '401':
-          $ref: '#/paths/~1consents/post/responses/401'
-        '403':
-          $ref: '#/paths/~1consents/post/responses/403'
-        '404':
-          $ref: '#/paths/~1consents/post/responses/404'
-        '405':
-          $ref: '#/paths/~1consents/post/responses/405'
-        '406':
-          $ref: '#/paths/~1consents/post/responses/406'
-        '501':
-          $ref: '#/paths/~1consents/post/responses/501'
-        '503':
-          $ref: '#/paths/~1consents/post/responses/503'
-    put:
-      operationId: UpdateThirdpartyAuthorization
-      summary: UpdateThirdpartyAuthorization
-      description: |
-        The HTTP request `PUT /thirdpartyRequests/transactions/{id}/authorizations` is used by the auth-service to update a thirdparty authorization after successful validation.
-        For an unsuccessful authorization result, the `PUT /thirdpartyRequests/transactions/{id}/authorizations/error` will be called by the auth-service, instead of this endpoint.
-
-        PISP -> Switch
-      parameters:
-        - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
-        - $ref: '#/paths/~1consents/post/parameters/1'
-        - $ref: '#/paths/~1consents/post/parameters/2'
-        - $ref: '#/paths/~1consents/post/parameters/3'
-        - $ref: '#/paths/~1consents/post/parameters/4'
-        - $ref: '#/paths/~1consents/post/parameters/5'
-        - $ref: '#/paths/~1consents/post/parameters/6'
-        - $ref: '#/paths/~1consents/post/parameters/7'
-        - $ref: '#/paths/~1consents/post/parameters/8'
-        - $ref: '#/paths/~1consents/post/parameters/9'
-        - $ref: '#/paths/~1consents/post/parameters/10'
-      requestBody:
-        description: The thirdparty authorization details to update
-        required: true
-        content:
-          application/json:
-            schema:
-              title: ThirdpartyRequestsTransactionsIDAuthorizationsPutResponse
-              type: object
-              description: 'The object sent in the PUT /thirdpartyRequests/transactions/{id}/authorizations request.'
-              properties:
-                challenge:
-                  type: string
-                  description: Base64 encoded binary string - the original challenge.
-                value:
-                  allOf:
-                    - type: string
-                      pattern: '^[A-Za-z0-9-_]+[=]{0,2}$'
-                      description: |
-                        The API data type BinaryString is a JSON String.
-                        The string is a base64url  encoding of a string of raw bytes,
-                        where padding (character ‘=’) is added at the end of the data if
-                        needed to ensure that the string is a multiple of 4 characters.
-                        The length restriction indicates the allowed number of characters.
-                  description: Base64 encoded binary string - the signed challenge.
-                consentId:
-                  allOf:
-                    - $ref: '#/paths/~1consentRequests/post/requestBody/content/application~1json/schema/properties/id'
-                  description: |
-                    Common ID between the PISP and FSP for the Consent object This tells DFSP and auth-service which consent allows the PISP to initiate transaction.
-                sourceAccountId:
-                  allOf:
-                    - $ref: '#/paths/~1thirdpartyRequests~1transactions/post/requestBody/content/application~1json/schema/properties/sourceAccountId/allOf/0'
-                  description: 'DFSP specific account identifiers, e.g. `dfspa.alice.1234`'
-                status:
-                  type: string
-                  enum:
-                    - VERIFIED
-                  description: The status of the authorization. This value must be `VERIFIED` for a PUT request.
-              required:
-                - challenge
-                - value
-                - consentId
-                - sourceAccountId
-                - status
-      responses:
-        '200':
-          $ref: '#/paths/~1consents~1%7BID%7D/put/responses/200'
-        '400':
-          $ref: '#/paths/~1consents/post/responses/400'
-        '401':
-          $ref: '#/paths/~1consents/post/responses/401'
-        '403':
-          $ref: '#/paths/~1consents/post/responses/403'
-        '404':
-          $ref: '#/paths/~1consents/post/responses/404'
-        '405':
-          $ref: '#/paths/~1consents/post/responses/405'
-        '406':
-          $ref: '#/paths/~1consents/post/responses/406'
-        '501':
-          $ref: '#/paths/~1consents/post/responses/501'
-        '503':
-          $ref: '#/paths/~1consents/post/responses/503'
   /consentRequests:
     post:
       tags:
@@ -1064,9 +986,9 @@ paths:
       operationId: CreateConsentRequest
       summary: CreateConsentRequest
       description: |
-        A request from a PISP to a DFSP to start the process of delegating consent.
+        A request from a PISP to a DFSP to start the process of delegating consentRequest.
 
-        Switch -> DFSP
+        PISP -> Switch
       parameters:
         - $ref: '#/paths/~1consents/post/parameters/0'
         - $ref: '#/paths/~1consents/post/parameters/1'
@@ -1170,14 +1092,13 @@ paths:
       operationId: UpdateConsentRequest
       summary: UpdateConsentRequest
       description: |
-        DFSP updates auth channels and/or auth uri in response to consentRequest.
+        PISP receives consentRequest back with DFSP auth channels and/or auth uri in response to consentRequest.
 
-        DFSP -> Switch
+        Switch -> PISP
 
-        PISP updates the consentRequest to include authorization token from their user,
-        which the DFSP is to then verify.
+        PISP updates the consentRequest to include authorization token from their user.
 
-        Switch -> DFSP
+        PISP -> Switch
       parameters:
         - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
         - $ref: '#/paths/~1consents/post/parameters/0'
@@ -1340,8 +1261,8 @@ paths:
                     - authToken
                   additionalProperties: false
       responses:
-        '202':
-          $ref: '#/paths/~1consents/post/responses/202'
+        '200':
+          $ref: '#/paths/~1consents~1%7BID%7D/put/responses/200'
         '400':
           $ref: '#/paths/~1consents/post/responses/400'
         '401':
@@ -1362,7 +1283,7 @@ paths:
     post:
       description: |
         Create a consent object. Called by DFSP after the successful creation and validation of a consentRequest.
-        DFSP -> Switch
+        Switch -> PISP
       summary: CreateConsent
       operationId: CreateConsent
       tags:
@@ -1591,7 +1512,7 @@ paths:
                         description: Error description string.
                         example: This is an error description.
                       extensionList:
-                        $ref: '#/paths/~1authorizations/post/requestBody/content/application~1json/schema/properties/quote/properties/extensionList'
+                        $ref: '#/paths/~1thirdpartyRequests~1transactions~1%7BID%7D/patch/requestBody/content/application~1json/schema/properties/extensionList'
                     required:
                       - errorCode
                       - errorDescription
@@ -1696,7 +1617,8 @@ paths:
 
         - Called by a `PISP` to add a signature of the challenge.
 
-        Switch -> DFSP
+        PISP -> Switch
+        Switch -> PISP
       summary: UpdateConsent
       tags:
         - consent
@@ -1747,13 +1669,7 @@ paths:
                       type: string
                       description: The id of a Credential.
                     type:
-                      title: CredentialType
-                      type: string
-                      enum:
-                        - FIDO
-                      description: |
-                        The type of the Credential.
-                        - "FIDO" - A FIDO public/private keypair.
+                      $ref: '#/paths/~1consents~1%7BID%7D~1generateChallenge/post/requestBody/content/application~1json/schema/properties/type'
                     status:
                       title: CredentialStatusType
                       type: string
@@ -1813,6 +1729,8 @@ paths:
       responses:
         '200':
           description: OK
+        '202':
+          $ref: '#/paths/~1consents/post/responses/202'
         '400':
           $ref: '#/paths/~1consents/post/responses/400'
         '401':
@@ -1833,7 +1751,7 @@ paths:
       description: |
         The HTTP request `PATCH /consents/{ID}` is used to notify the PISP and DFSP of revoked consent.
 
-        Switch -> DFSP
+        Switch -> PISP
       summary: NotifyConsent
       tags:
         - consent
@@ -1895,6 +1813,72 @@ paths:
           $ref: '#/paths/~1consents/post/responses/501'
         '503':
           $ref: '#/paths/~1consents/post/responses/503'
+  '/consents/{ID}/generateChallenge':
+    post:
+      tags:
+        - consents
+      operationId: GenerateChallengeRequest
+      summary: GenerateChallengeRequest
+      description: |
+        PISP requests a challenge from the auth service.
+
+        PISP -> Switch
+      parameters:
+        - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
+        - $ref: '#/paths/~1consents/post/parameters/0'
+        - $ref: '#/paths/~1consents/post/parameters/1'
+        - $ref: '#/paths/~1consents/post/parameters/2'
+        - $ref: '#/paths/~1consents/post/parameters/3'
+        - $ref: '#/paths/~1consents/post/parameters/4'
+        - $ref: '#/paths/~1consents/post/parameters/5'
+        - $ref: '#/paths/~1consents/post/parameters/6'
+        - $ref: '#/paths/~1consents/post/parameters/7'
+        - $ref: '#/paths/~1consents/post/parameters/8'
+        - $ref: '#/paths/~1consents/post/parameters/9'
+        - $ref: '#/paths/~1consents/post/parameters/10'
+      requestBody:
+        description: GenerateChallengeRequest Body
+        required: true
+        content:
+          application/json:
+            schema:
+              title: ConsentsIDGenerateChallengePostRequest
+              type: object
+              description: |
+                A credential used to allow a user to prove their identity
+                and access to an account with a DFSP.
+              properties:
+                type:
+                  title: CredentialType
+                  type: string
+                  enum:
+                    - FIDO
+                  description: |
+                    The type of the Credential.
+                    - "FIDO" - A FIDO public/private keypair.
+              required:
+                - type
+            example:
+              type: FIDO
+      responses:
+        '202':
+          $ref: '#/paths/~1consents/post/responses/202'
+        '400':
+          $ref: '#/paths/~1consents/post/responses/400'
+        '401':
+          $ref: '#/paths/~1consents/post/responses/401'
+        '403':
+          $ref: '#/paths/~1consents/post/responses/403'
+        '404':
+          $ref: '#/paths/~1consents/post/responses/404'
+        '405':
+          $ref: '#/paths/~1consents/post/responses/405'
+        '406':
+          $ref: '#/paths/~1consents/post/responses/406'
+        '501':
+          $ref: '#/paths/~1consents/post/responses/501'
+        '503':
+          $ref: '#/paths/~1consents/post/responses/503'
   '/consents/{ID}/revoke':
     post:
       description: |
@@ -1902,7 +1886,7 @@ paths:
         - Called by a PISP when a user wants to unlink their account(s).
         - Called by a DFSP when a dfsp wants to unlink user's account(s).
 
-        DFSP -> Switch
+        PISP -> Switch
       parameters:
         - $ref: '#/paths/~1consents~1%7BID%7D/put/parameters/0'
         - $ref: '#/paths/~1consents/post/parameters/1'

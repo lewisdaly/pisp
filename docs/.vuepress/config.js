@@ -28,13 +28,13 @@ module.exports = {
           {
             text: 'Thirdparty-PISP API',
             items: [
-              { text: 'PISP', link: '/linking/' },
+              { text: 'PISP', link: '/api/thirdparty-pisp.html' },
             ],
           },
           {
             text: 'Thirdparty-DFSP API',
             items: [
-              { text: 'DFSP', link: '/transfer/' }
+              { text: 'DFSP', link: '/api/thirdparty-dfsp.html' }
             ],
           },
         ]
@@ -42,21 +42,40 @@ module.exports = {
       { text: 'Mojaloop Docs', link: 'https://docs.mojaloop.io/documentation' }
     ],
     displayAllHeaders: true,
-    // TODO make nice sidebar
     sidebar: [
       {
-        title: 'Overview',   // required
+        title: 'Getting Started',
         collapsable: false, // optional, defaults to true
-        sidebarDepth: 1,    // optional, defaults to 1
+        sidebarDepth: 0,    // optional, defaults to 1
         children: [
-          '/'
+          ['/overview', 'PISP Overview'],
+          ['/background', 'Background'],
+          ['/use_cases', 'Use Cases']
+        ],
+        // initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
+      },
+      {
+        title: 'Guides',
+        children: [
+          ['/guides/pisp_integration.html', 'PISP Integration Guide'],
+          ['/guides/reference_pisp_app.html', 'PISP Reference App'],
+          ['/guides/dfsp_integration.html', 'DFSP Integration Guide'],
         ]
       },
       {
-        title: 'Getting Started',
-        children: [ /* ... */],
-        initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
-      }
+        title: 'Sequence Diagrams',
+        children: [
+          ['/linking/', 'Account Linking Process'],
+          ['/transfer/', 'Transfer Process']
+        ]
+      },
+      {
+        title: 'API Reference',
+        children: [
+          ['/api/thirdparty-pisp.html', 'Thirdparty-PISP API'],
+          ['/api/thirdparty-dfsp.html', 'Thirdparty-DFSP API'],
+        ]
+      },
     ]
     // sidebar: [
     //   '/',
