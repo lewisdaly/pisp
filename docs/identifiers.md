@@ -24,8 +24,6 @@ This document aims to define the relationship between a party's account with a D
 
 ### Basic Sequence Diagram
 
-![Identifiers Association Flow](./out/identifiers-assoc/Identifiers_Association.png)
-
 
 1. Ayeesha registers her chequing account with DFSP A to the PISP App  
 
