@@ -2,6 +2,7 @@ module.exports = {
   description: 'Just playing around',
   //full url is "docs.mojaloop.io/pisp"
   base: '/pisp/',
+  // theme: 'api',
   themeConfig: {
     home: true,
     // this file is copied out of `/public` for us
@@ -71,5 +72,21 @@ module.exports = {
     // Allow nice zooming on images
     // https://vuepress.vuejs.org/plugin/official/plugin-medium-zoom.html#install
     '@vuepress/medium-zoom',
-  ]
+
+    // Beta - export site as PDF
+    // https://github.com/ulivz/vuepress-plugin-export
+    'vuepress-plugin-export'
+  ],
+  // I think we need this for swagger renderer...
+  configureWebpack: (config, isServer) => {
+    if (!isServer) {
+      // mutate the config for client
+      config.node.global = true;
+      config.node.process = "mock";
+      config.module.rules.push({
+        test: /\.ya?ml$/,
+        loader: "js-yaml-loader"
+      });
+    }
+  }
 }

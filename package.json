@@ -19,6 +19,7 @@
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs",
     "docs:deploy": "./scripts/_deploy_gh_pages.sh",
+    "docs:export": "vuepress export ./docs",
     "lint": "eslint ./src/**/*.ts *.js",
     "move:ttk-thirdparty:api": "cp ./src/interface/ttk-thirdparty-api.yaml ./docker-contract/ml-testing-toolkit/spec_files/api_definitions/thirdparty_pisp/api_spec.yaml",
     "pretest": "npm run build",
@@ -93,15 +94,20 @@
     "jest": "26.0.1",
     "jest-cucumber": "^2.0.11",
     "jest-junit": "10.0.0",
+    "js-yaml": "^3.14.0",
+    "js-yaml-loader": "^1.2.2",
     "lint-staged": "^10.2.3",
     "newman": "^5.0.1",
     "source-map-support": "0.5.12",
+    "swagger-ui": "^3.35.1",
     "swagger-cli": "^4.0.3",
     "ts-jest": "^26.0.0",
     "ts-node": "8.3.0",
     "typescript": "3.9.2",
     "uuid": "^8.3.1",
     "vuepress": "^1.7.1",
-    "vuepress-plugin-check-md": "0.0.2"
+    "vuepress-plugin-check-md": "0.0.2",
+    "vuepress-plugin-export": "^0.2.0",
+    "vuepress-theme-api": "^1.0.0-beta.9"
   }
 }
