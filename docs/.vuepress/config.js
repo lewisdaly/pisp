@@ -70,6 +70,15 @@ module.exports = {
         ]
       },
       {
+        title: 'Design',
+        children: [
+          ['/design-decisions/', 'Design Decisions'],
+          ['/roles_and_endpoints', 'Roles and Endpoints'],
+          ['/identifiers', 'Identifiers'],
+          ['/error_codes', 'Error Codes'],
+        ]
+      },
+      {
         title: 'API Reference',
         children: [
           ['/api/thirdparty-pisp.html', 'Thirdparty-PISP API'],
