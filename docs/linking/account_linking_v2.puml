@@ -1,0 +1,353 @@
+
+@startuml
+
+title API-based Account Linking for PISP
+
+participant "PISP Handset" as A1
+participant "PISP Server" as P1
+participant "Switch" as S1
+participant "DFSP A" as D1
+participant ALS
+participant "FIDO Server" as FIDO
+
+autonumber "PRE-"
+
+activate A1
+A1->P1:I'd like to use my account\nwith your service, please
+activate P1
+P1->S1:Which DFSPs\noffer account linking?
+note over P1
+
+GET /services/THIRD_PARTY_DFSP
+
+end note
+activate S1
+S1-->P1:202 I'll get back to you
+deactivate P1
+S1->ALS:Which DFSPs offer account linking?
+activate ALS
+ALS-->S1:202 I'll get back to you
+ALS->S1:DFSP A, DFSP C, DFSP D
+S1-->ALS:200 Got it
+deactivate ALS
+S1->P1:DFSP A, DFSP C, DFSP D1\noffer account linking
+activate P1
+P1-->S1:200 Got it
+deactivate S1
+P1->A1:I can offer you DFSP A,\nDFSP C or DFSP D\nLet me know which\nidentifier to use
+deactivate P1
+A1->P1:My account is at DFSP A\nMy account number is 123456
+activate P1
+P1-->A1:Thanks, I'll get on it
+P1->S1:Please confirm that you\nspeak for account 123456
+activate S1
+note over P1
+
+FSPIOP-Source:PISP_A
+FSPIOP-Destination:DFSP_A
+
+GET /parties/ACCOUNT_ID/123456
+
+end note
+S1-->P1:202 I'll get back to you
+deactivate P1
+S1->D1:Do you speak for\nAccount 123456?
+activate D1
+D1-->S1:202 I'll get back to you
+deactivate S1
+D1->D1:Check I approve the sender\nand recognise this account
+D1->S1:Yes, I recognise them.\nHere is their account information
+activate S1
+S1-->D1:200 Got it
+deactivate D1
+S1->P1:Here is their account information
+activate P1
+P1-->S1:200 Got it
+deactivate S1
+P1->A1:Here are the accounts\nat DFSP A that you can\ngrant access to
+A1-->P1:Thanks
+deactivate P1
+
+==  Start of linking process ==
+
+autonumber "LINK-"
+
+A1->P1:I'd like to give you access\nto my current account, please
+activate P1
+P1-->A1:Ok, I'll get on it
+P1->S1:I'd like to link this account, please
+activate S1
+note over P1
+
+
+FSPIOP-Source:PISP_A
+FSPIOP-Destination:DFSP_A
+
+POST /consentRequests
+
+{
+    consentRequestId: "eef49ad4-dcd8-46fa-a274-ae0fb80d73d4",
+    scopes:[
+        {
+            accountId: "dfsp.mike.1234",
+            actions: [
+                "accounts.transfer",
+                "accounts.getBalance"
+            ]
+        }
+    ],
+    authChannels: ["Web", "OTP"],
+    callbackUri: "pisp-app://callback"
+}
+
+end note
+S1-->P1:202 I'll get back to you
+deactivate P1
+S1->D1:Here's an account link request
+activate D1
+D1-->S1:202 I'll get back to you
+deactivate S1
+D1->D1:Do I recognise this account?\nand this PISP?
+D1->S1:I'm happy with this request.\nHere is the URL where your\ncustomer can authenticate.
+activate S1
+S1-->D1:200 Got it
+deactivate D1
+S1->P1:Request accepted.\nHere is the authentication information
+activate P1
+P1-->S1:200 Got it
+deactivate S1
+P1->A1:Please authenticate with your\napplication to confirm the link
+A1-->P1:OK, thanks.
+deactivate P1
+==  Out of band authentication happens here... ==
+
+autonumber "AUTH-"
+A1->P1:I have authenticated.\nHere is the bearer token
+activate P1
+P1->S1:Here is the bearer token\nyou gave my customer
+activate S1
+note over P1
+
+
+FSPIOP-Source:PISP_A
+FSPIOP-Destination:DFSP_A
+
+PUT /consentRequests/eef49ad4-dcd8-46fa-a274-ae0fb80d73d4
+
+{
+    scopes:[
+        {
+            accountId: "dfsp.mike.1234",
+            actions: [
+                "accounts.transfer",
+                "accounts.getBalance"
+            ]
+        }
+    ],
+    authChannels: ["Web", "OTP"],
+    authToken: "1/mZ1edKKACtPAb7zGlwSzvs72PvhAbGmB8K1ZrGxpcNM"
+}
+
+end note
+S1-->P1:202 I'll get back to you
+deactivate P1
+S1->D1:Here's the bearer token for you
+activate D1
+D1-->S1:200 Got it, thanks
+deactivate S1
+D1->D1:Do I recognise this\nbearer token?
+D1->D1:What permissions am I disposed\nto grant this peremptory upstart?
+
+==  Confirm linking  ==
+
+autonumber "CONF-"
+
+D1->S1:Please register my\naccount partyIdentifier
+activate S1
+
+note over D1
+
+
+FSPIOP-Source:DFSP_A
+FSPIOP-Destination:
+
+POST /participants
+
+{
+    requestID: "76ac59be-921b-4210-bfca-5696ae2d7069",
+    [
+        partyIdInfo: {
+            partyIdType: "THIRD_PARTY_LINK",
+            partyIdentifier: "SomeWeirdValueIInvented"
+        }
+    ]
+}
+
+end note
+S1-->D1:202 I'll get back to you
+deactivate D1
+S1->ALS:Please register this identifier
+activate ALS
+ALS->ALS:Check this isn't\na duplicate...
+ALS->S1:OK, registered
+deactivate ALS
+S1->D1:OK, your ID has been registered
+activate D1
+D1-->S1:200 OK, got it.
+deactivate S1
+
+
+D1->S1:Here are the terms of the link
+activate S1
+
+note over D1
+
+
+FSPIOP-Source:DFSP_A
+FSPIOP-Destination:PISP_A
+
+POST /consents
+
+{
+    consentID: "d60c947b-46b5-4884-b4b3-5f64431655c4",
+    consentRequestId: "eef49ad4-dcd8-46fa-a274-ae0fb80d73d4",
+    scopes:[
+        {
+            accountId: "dfsp.mike.1234",
+            actions: [
+                "accounts.transfer",
+                "accounts.getBalance"
+            ],
+            partyIdInfo: {
+                partyIdType: "THIRD_PARTY_LINK",
+                partyIdentifier: "SomeWeirdValueIInvented"
+            }
+        }
+    ]
+}
+
+end note
+
+S1-->D1:202 I'll get back to you
+deactivate D1
+S1->P1:Here's the consent you asked for
+activate P1
+P1-->S1:200 Got it, thanks
+deactivate S1
+P1->P1:OK, so now I need to get the FIDO\nstuff sorted Out
+P1->A1:Please generate a key pair\nand send me the public key
+A1-->P1:There you go.\nIt's "SomeLongHexNumber"
+P1->S1:PLease register the public key\nfor this account
+activate S1
+
+note over P1
+
+
+FSPIOP-Source: PISP_A
+FSPIOP-Destination: DFSP_A
+
+POST /validations
+
+{
+    identification: {
+        partyIdType: "THIRD_PARTY_LINK",
+        partyIdentifier: "SomeWeirdValueIInvented"
+    },
+    validator: "SomeLongHexNumber"
+}
+
+end note
+S1-->P1:202 I'll get back to you
+deactivate P1
+S1->D1:Here's a validation for you
+activate D1
+D1-->S1:200 Thanks, got it.
+deactivate S1
+
+D1->D1:Register the public key\nagainst the partyIdentifier
+
+D1->S1:PLease register the public key\nfor this account
+activate S1
+
+note over D1
+
+
+FSPIOP-Source: DFSP_A
+FSPIOP-Destination: FIDO
+
+POST /validations
+
+{
+    identification: {
+        partyIdType: "THIRD_PARTY_LINK",
+        partyIdentifier: "SomeWeirdValueIInvented"
+    },
+    validator: "SomeLongHexNumber"
+}
+
+end note
+S1-->D1:202 I'll get back to you
+deactivate D1
+S1->FIDO:Please register the public key\nfor this account
+activate FIDO
+FIDO-->S1:202 I'll get back to you
+deactivate S1
+FIDO->FIDO:Register the ID\nand public key
+FIDO->S1:Registration succeeded
+activate S1
+S1-->FIDO:200 OK, got it.
+deactivate FIDO
+S1->D1:Registration succeeded
+activate D1
+D1-->S1:Ok, got it.
+deactivate S1
+D1->S1:Registration succeeded\n(This is for the PISP)
+activate S1
+S1-->D1:OK, got it
+deactivate D1
+S1->P1:Registration succeeded
+activate P1
+P1-->S1:200 OK, got it.
+deactivate S1
+P1->A1:Congratulations, account\nmapping was successful!
+deactivate A1
+P1->S1:OK, I successfully\nset the mapping up
+activate S1
+note over P1
+
+
+FSPIOP-Source: PISP_A
+FSPIOP-Destination: DFSP_A
+
+PUT /consents/d60c947b-46b5-4884-b4b3-5f64431655c4
+
+{
+    scopes:[
+        {
+            accountId: "dfsp.mike.1234",
+            actions: [
+                "accounts.transfer",
+                "accounts.getBalance"
+            ],
+            partyIdInfo: {
+                partyIdType: "THIRD_PARTY_LINK",
+                partyIdentifier: "SomeWeirdValueIInvented"
+            }
+        }
+    ]
+    consentState: "COMPLETED"
+}
+
+end note
+
+S1-->P1:200 OK, got it
+deactivate P1
+S1->D1:OK, mapping was successful
+activate D1
+D1-->S1:200 OK, got it
+deactivate S1
+D1->D1:Tie it up and\nput a little bow on it
+deactivate D1
+
+
+@enduml
