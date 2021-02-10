@@ -25,17 +25,14 @@ kubens pisp-test
 
 # add helm repos and install mojaloop
 helm repo add mojaloop http://mojaloop.io/helm/repo/
-helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-helm repo add kiwigrid https://kiwigrid.github.io
-helm repo add elastic https://helm.elastic.co
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add public https://charts.helm.sh/incubator
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 # install mojaloop
-helm upgrade --install  --namespace ml-app mojaloop mojaloop/mojaloop  -f ./values_mojaloop.yaml --wait --timeout 15m
+helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop -f ./values_mojaloop.yaml
 
 # install an ingress controller
-helm --namespace kube-public install ingress ingress-nginx/ingress-nginx
-kubens kube-public
+helm --namespace pisp-test install ingress ingress-nginx/ingress-nginx
 kubectl get service/ingress-ingress-nginx-controller
 
 # output is: something like
