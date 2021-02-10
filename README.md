@@ -4,8 +4,10 @@ This repo contains the documentation, specifications and tests for the Mojaloop-
 
 ## Overview
 - [Project Documentation](./docs/README.md) - Project Documentation, flows, uml diagrams and so on
+    - [Deployment Guide](./docs/deployment_guide.md) - How to deploy PISP demos
 - [Docker-Local](./docker-local/README.md) - Onboarding environment for local development & end to end testing
-- [Docker-Live](./docker-live/README.md) - Kubernetes Environment for live deployment
+- [Docker-Live [Deprecated]](./docker-live/README.md) - Deprecated Kubernetes Environment for live deployment
+- [mojaloop/helm](https://github.com/mojaloop/helm/) - Helm Charts for deploying PISP functionality
 - [Docker-Contract](./docker-contract/README.md) - Environment for testing with ml-testing-toolkit
 
 

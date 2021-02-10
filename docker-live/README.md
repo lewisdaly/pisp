@@ -1,7 +1,12 @@
-# Docker-Live
+# [Deprecated] Docker-Live
 
 A live lab environment for PISP Demos. Deployed using K8s + Helm
 
+> **Note:**  
+> this method for deploying PISP demos is depreacted
+> Please refer to [`mojaloop/helm`](https://github.com/mojaloop/helm) for
+> the thirdparty api helm charts, and [the Deployment Guide](../docs/deployment_guide.md)
+> for instructions on how to deploy the PISP functionality in your Mojaloop switch
 
 ## Prerequisites
 - `helm` v3 or later
