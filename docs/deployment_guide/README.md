@@ -115,7 +115,7 @@ helm upgrade --install --namespace pisp-test pig-ttk mojaloop/ml-testing-toolkit
 helm upgrade --install --namespace pisp-test dog-ttk mojaloop/ml-testing-toolkit --values ./config/values-ttk-dog.yaml
 
 # install ingress for simulators and ttk instances
-# TODO
+kubectl apply -f ./config/ingress_simulators.yaml
 ```
 
 ## Configuring 
@@ -123,6 +123,15 @@ helm upgrade --install --namespace pisp-test dog-ttk mojaloop/ml-testing-toolkit
 Now we will use `ml-boostrap` to set up our switch and simulators from scratch
 
 ```bash
+cd $BASE_DIR/ml-bootstrap
+npm run ml-bootstrap -- hub -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
+
+# bootstrap only the participants
+npm run ml-bootstrap -- participants -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
+
+# bootstrap only the parties (end users)
+npm run ml-bootstrap -- parties -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
+
 
 ```
 
