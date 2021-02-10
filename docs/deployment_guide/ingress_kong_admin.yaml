@@ -55,26 +55,19 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/admin/central-ledger/(.*)
+          - path: /pisp-test/api/admin/central-ledger/(.*)
             backend:
               serviceName: mojaloop-centralledger-service
               servicePort: 80
-          - path: /api/admin/account-lookup-service/(.*)
+          - path: /pisp-test/api/admin/account-lookup-service/(.*)
             backend:
               serviceName: mojaloop-account-lookup-service
               servicePort: 80
-          - path: /api/admin/account-lookup-service-admin/(.*)
+          - path: /pisp-test/api/admin/account-lookup-service-admin/(.*)
             backend:
               serviceName: mojaloop-account-lookup-service-admin
               servicePort: 80
-          - path: /api/admin/ml-api-adapter/(.*)
+          - path: /pisp-test/api/admin/ml-api-adapter/(.*)
             backend:
               serviceName: mojaloop-ml-api-adapter-service
               servicePort: 80
-          # todo: this isn't currently working
-          # - path: /api/admin/dashboard/(.*)
-          - path: /admin/dashboard
-            backend:
-              serviceName: kubernetes-dashboard
-              servicePort: 443
-         

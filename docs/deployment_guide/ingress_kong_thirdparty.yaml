@@ -28,7 +28,7 @@ spec:
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
-          - path: /pisp-test/api/thirdparty/(consents.*)
+          - path: /pisp-test/api/thirdparty/(consentRequests.*)
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008

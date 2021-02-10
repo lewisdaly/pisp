@@ -65,18 +65,37 @@ helm repo update
 # install kong with custom config
 helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./kong_values.yaml
 
-# set up our own ingress
+# set up our own ingresses
 kubectl apply -f ./ingress_kong_thirdparty.yaml
+kubectl apply -f ./ingress_kong_fspiop.yaml
+kubectl apply -f ./ingress_kong_admin.yaml
+
+# test the endpoints are exposed correctly 
+# (these should throw errors, since GET isn't allowed, and we're not passing
+# in any headers
+curl beta.moja-lab.live/pisp-test/api/fspiop/participants
+curl beta.moja-lab.live/pisp-test/api/fspiop/parties
+curl beta.moja-lab.live/pisp-test/api/fspiop/transactionRequests
+curl beta.moja-lab.live/pisp-test/api/fspiop/authorizations
+curl beta.moja-lab.live/pisp-test/api/fspiop/quotes
+curl beta.moja-lab.live/pisp-test/api/fspiop/transfers
+
+curl beta.moja-lab.live/pisp-test/api/thirdparty/consents
+curl beta.moja-lab.live/pisp-test/api/thirdparty/consentRequests
+curl beta.moja-lab.live/pisp-test/api/thirdparty/thirdpartyRequests/transactions/
+curl beta.moja-lab.live/pisp-test/api/thirdparty/authorizations
 
 
+# health checks
+curl beta.moja-lab.live/pisp-test/api/admin/central-ledger/health
+curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service/health
+curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service-admin/health
+curl beta.moja-lab.live/pisp-test/api/admin/ml-api-adapter/health
+curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-api-adapter/health
+curl beta.moja-lab.live/pisp-test/api/admin/auth-service/health
+curl beta.moja-lab.live/pisp-test/api/admin/oracle-consent/health
+curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-tx-requests-service/health
 ```
-
-[ 
-  todo: kong api gateway? that might make things easier... 
-    - also the ml-seeder might need it...
-    - we also might want some header based routing if possible...
-
-]
 
 
 
