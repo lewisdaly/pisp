@@ -29,6 +29,8 @@ helm repo add public https://charts.helm.sh/incubator
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 # install mojaloop
+# values_mojaloop.yaml specifies some special versions for 
+# pisp to run with (central-ledger, account-lookup-service)
 helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop -f ./values_mojaloop.yaml
 
 # install an ingress controller
@@ -39,12 +41,18 @@ kubectl get service/ingress-ingress-nginx-controller
 # ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com
 export ELB_URL=<your ingress url>
 
-curl -H "Host: account-lookup-service.local" $ELB_URL/health
-curl -H "Host: ml-api-adapter.local" $ELB_URL/health
-curl -H "Host: central-ledger.local" $ELB_URL/health
+curl -H "Host: account-lookup-service.dev" $ELB_URL/health
+curl -H "Host: ml-api-adapter.dev" $ELB_URL/health
+curl -H "Host: central-ledger.dev" $ELB_URL/health
 ```
 
-[ todo: kong api gateway? that might make things easier... also the ml-seeder might need it...]
+[ 
+  todo: kong api gateway? that might make things easier... 
+    - also the ml-seeder might need it...
+    - we also might want some header based routing if possible...
+
+]
+
 
 
 ## Installing PISP + DFSP Simulators

@@ -33,11 +33,11 @@ central:
       # Declare variables to be passed into your templates.
       enabled: true
       replicaCount: 1
-      # containers:
-      #   api:
-      #     image:
-      #       repository: mojaloop/central-ledger
-      #       tag: v5.1.1
+      containers:
+        api:
+          image:
+          # temporary override for PISP needs
+            tag: v11.3.3.0-pisp
       #       pullPolicy: Always
       #       command: '["node", "src/api/index.js"]'
       #     service:
@@ -1518,7 +1518,7 @@ central:
       externalPath: /
       # Used to create an Ingress record.
       hosts:
-        api: dev2-central-settlement.mojaloop.live
+        api: dev2-central-settlement.mojaloop.dev
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: '/'
         # kubernetes.io/ingress.class: nginx
@@ -2267,7 +2267,7 @@ account-lookup-service:
       api:
         image:
           repository: mojaloop/account-lookup-service
-          #          tag: v6.2.0-snapshot
+          tag: v11.1.2.2-pisp
           pullPolicy: Always
           command: '["node", "src/index.js", "server", "--api"]'
         service:
@@ -2278,7 +2278,7 @@ account-lookup-service:
       admin:
         image:
           repository: mojaloop/account-lookup-service
-          #          tag: v6.2.0-snapshot
+          tag: v11.1.2.2-pisp
           pullPolicy: Always
           command: '["node", "src/index.js", "server", "--admin"]'
         service:
@@ -2423,7 +2423,7 @@ account-lookup-service:
       api:
         image:
           repository: mojaloop/account-lookup-service
-          #          tag: v6.2.0-snapshot
+          tag: v11.1.2.2-pisp
           pullPolicy: Always
           command: '["node", "src/index.js", "server", "--api"]'
         service:
@@ -2434,7 +2434,7 @@ account-lookup-service:
       admin:
         image:
           repository: mojaloop/account-lookup-service
-          #          tag: v6.2.0-snapshot
+          tag: v11.1.2.2-pisp
           pullPolicy: Always
           command: '["node", "src/index.js", "server", "--admin"]'
         service:
@@ -3069,7 +3069,7 @@ transaction-requests-service:
     externalPath: /
     # Used to create an Ingress record.
     hosts:
-      api: dev2-transaction-requests-service.mojaloop.live
+      api: dev2-transaction-requests-service.mojaloop.dev
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -3160,7 +3160,7 @@ simulator:
       # kubernetes.io/tls-acme: "true"
     path: /
     hosts:
-      - dev2-simulator.mojaloop.live
+      - dev2-simulator.mojaloop.dev
     tls: []
       #  - secretName: chart-example-tls
       #    hosts:
@@ -3245,11 +3245,11 @@ mojaloop-simulator:
                 -----END PUBLIC KEY-----
       ingress:
         hosts: 
-          - dev2-sim-payerfsp.mojaloop.live
+          - dev2-sim-payerfsp.mojaloop.dev
     payeefsp:
       ingress:
         hosts: 
-          - dev2-sim-payeefsp.mojaloop.live
+          - dev2-sim-payeefsp.mojaloop.dev
       config:
         schemeAdapter:
           env:
@@ -3302,7 +3302,7 @@ mojaloop-simulator:
     testfsp1:
       ingress:
         hosts: 
-          - dev2-sim-testfsp1.mojaloop.live
+          - dev2-sim-testfsp1.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3349,7 +3349,7 @@ mojaloop-simulator:
     testfsp2:
       ingress:
         hosts: 
-          - dev2-sim-testfsp2.mojaloop.live
+          - dev2-sim-testfsp2.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3396,7 +3396,7 @@ mojaloop-simulator:
     testfsp3:
       ingress:
         hosts: 
-          - dev2-sim-testfsp3.mojaloop.live
+          - dev2-sim-testfsp3.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3443,7 +3443,7 @@ mojaloop-simulator:
     testfsp4:
       ingress:
         hosts: 
-          - dev2-sim-testfsp4.mojaloop.live
+          - dev2-sim-testfsp4.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3490,7 +3490,7 @@ mojaloop-simulator:
     applebank:
       ingress:
         hosts: 
-          - dev2-sim-applebank.mojaloop.live
+          - dev2-sim-applebank.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3537,7 +3537,7 @@ mojaloop-simulator:
     bananabank:
       ingress:
         hosts: 
-          - dev2-sim-bananabank.mojaloop.live
+          - dev2-sim-bananabank.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3584,7 +3584,7 @@ mojaloop-simulator:
     carrotmm:
       ingress:
         hosts: 
-          - dev2-sim-carrotmm.mojaloop.live
+          - dev2-sim-carrotmm.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3631,7 +3631,7 @@ mojaloop-simulator:
     duriantech:
       ingress:
         hosts: 
-          - dev2-sim-duriantech.mojaloop.live
+          - dev2-sim-duriantech.mojaloop.dev
       config:
         schemeAdapter:
           secrets:
@@ -3776,15 +3776,15 @@ mojaloop-simulator:
 
           # SWITCH ENDPOINT - Switch or DFSP system under test Mojaloop API endpoint
           # The option 'PEER_ENDPOINT' has no effect if the remaining three options 'ALS_ENDPOINT', 'QUOTES_ENDPOINT', 'TRANSFERS_ENDPOINT' are specified.
-          PEER_ENDPOINT: beta.moja-lab.live/api/fspiop
+          PEER_ENDPOINT: beta.moja-lab.dev/api/fspiop
 
           # Common Account Lookup System (ALS)
-          # ALS_ENDPOINT: dev2-account-lookup.mojaloop.live
-          # QUOTES_ENDPOINT: dev2-quoting-service.mojaloop.live
-          # TRANSFERS_ENDPOINT: dev2-ml-api-adapter.mojaloop.live
-          # BULK_TRANSFERS_ENDPOINT: dev2-bulk-api-adapter.mojaloop.live
-          # BULK_QUOTES_ENDPOINT: dev2-quoting-service.mojaloop.live
-          # TRANSACTION_REQUESTS_ENDPOINT: dev2-transaction-requests-service.mojaloop.live
+          # ALS_ENDPOINT: dev2-account-lookup.mojaloop.dev
+          # QUOTES_ENDPOINT: dev2-quoting-service.mojaloop.dev
+          # TRANSFERS_ENDPOINT: dev2-ml-api-adapter.mojaloop.dev
+          # BULK_TRANSFERS_ENDPOINT: dev2-bulk-api-adapter.mojaloop.dev
+          # BULK_QUOTES_ENDPOINT: dev2-quoting-service.mojaloop.dev
+          # TRANSACTION_REQUESTS_ENDPOINT: dev2-transaction-requests-service.mojaloop.dev
 
           # Simulator backend container endpoint
           # BACKEND_ENDPOINT: "localhost:3000" # within pod
@@ -4045,7 +4045,7 @@ mojaloop-bulk:
         externalPath: /
         # Used to create an Ingress record.
         hosts:
-          api: dev2-bulk-api-adapter.mojaloop.live
+          api: dev2-bulk-api-adapter.mojaloop.dev
 
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: '/'
@@ -5048,7 +5048,7 @@ finance-portal:
       enabled: true
       externalPath: /
       hosts: 
-        api: dev2-finance-portal.mojaloop.live
+        api: dev2-finance-portal.mojaloop.dev
       annotations:
         kubernetes.io/ingress.class: nginx
         ## NGINX Ingres Control < v0.22-
@@ -5075,7 +5075,7 @@ finance-portal:
       enabled: true
       externalPath: /admin-portal-backend/
       hosts: 
-        api: dev2-finance-portal.mojaloop.live
+        api: dev2-finance-portal.mojaloop.dev
       annotations:
         kubernetes.io/ingress.class: nginx
         ## NGINX Ingres Control < v0.22-
@@ -5192,10 +5192,10 @@ ml-testing-toolkit:
     ingress:
       enabled: true
       hosts:
-        dev2-testing-toolkit-specapi.mojaloop.live:
+        dev2-testing-toolkit-specapi.mojaloop.dev:
           port: 5000
           paths: ['/']
-        dev2-testing-toolkit.mojaloop.live:
+        dev2-testing-toolkit.mojaloop.dev:
           port: 5050
           paths: ['/api/', '/socket.io/']
     config:
@@ -5206,17 +5206,17 @@ ml-testing-toolkit:
             {
               "method": "put",
               "path": "/parties/{Type}/{ID}",
-              "endpoint": "http://dev2-account-lookup.mojaloop.live"
+              "endpoint": "http://dev2-account-lookup.mojaloop.dev"
             },
             {
               "method": "put",
               "path": "/quotes/{ID}",
-              "endpoint": "http://dev2-quoting-service.mojaloop.live"
+              "endpoint": "http://dev2-quoting-service.mojaloop.dev"
             },
             {
               "method": "put",
               "path": "/transfers/{ID}",
-              "endpoint": "http://dev2-ml-api-adapter.mojaloop.live"
+              "endpoint": "http://dev2-ml-api-adapter.mojaloop.dev"
             }
           ]
         },
@@ -5231,11 +5231,11 @@ ml-testing-toolkit:
     ingress:
       enabled: true
       hosts:
-        dev2-testing-toolkit.mojaloop.live:
+        dev2-testing-toolkit.mojaloop.dev:
           port: 6060
           paths: ['/']
     config:
-      API_BASE_URL: http://dev2-testing-toolkit.mojaloop.live
+      API_BASE_URL: http://dev2-testing-toolkit.mojaloop.dev
 
 ml-ttk-posthook-setup:
   postInstallHook:
@@ -5244,7 +5244,7 @@ ml-ttk-posthook-setup:
   config:
     testCasesZipUrl: https://github.com/mojaloop/testing-toolkit-test-cases/archive/master.zip
     testCasesPathInZip: testing-toolkit-test-cases-master/collections/hub/provisioning
-    # ttkBackendURL: http://dev-testing-toolkit-adminapi.mojaloop.live
+    # ttkBackendURL: http://dev-testing-toolkit-adminapi.mojaloop.dev
     # ttkBackendURL: http://ml-testing-toolkit
 
   # testCaseEnvironmentFile:  {
@@ -5279,16 +5279,16 @@ ml-ttk-posthook-setup:
   #     "fspiopSignature": "{\"signature\":\"iU4GBXSfY8twZMj1zXX1CTe3LDO8Zvgui53icrriBxCUF_wltQmnjgWLWI4ZUEueVeOeTbDPBZazpBWYvBYpl5WJSUoXi14nVlangcsmu2vYkQUPmHtjOW-yb2ng6_aPfwd7oHLWrWzcsjTF-S4dW7GZRPHEbY_qCOhEwmmMOnE1FWF1OLvP0dM0r4y7FlnrZNhmuVIFhk_pMbEC44rtQmMFv4pm4EVGqmIm3eyXz0GkX8q_O1kGBoyIeV_P6RRcZ0nL6YUVMhPFSLJo6CIhL2zPm54Qdl2nVzDFWn_shVyV0Cl5vpcMJxJ--O_Zcbmpv6lxqDdygTC782Ob3CNMvg\\\",\\\"protectedHeader\\\":\\\"eyJhbGciOiJSUzI1NiIsIkZTUElPUC1VUkkiOiIvdHJhbnNmZXJzIiwiRlNQSU9QLUhUVFAtTWV0aG9kIjoiUE9TVCIsIkZTUElPUC1Tb3VyY2UiOiJPTUwiLCJGU1BJT1AtRGVzdGluYXRpb24iOiJNVE5Nb2JpbGVNb25leSIsIkRhdGUiOiIifQ\"}",
   #     "HUB_OPERATOR_BEARER_TOKEN": "NOT_APPLICABLE",
   #     "BASE_CENTRAL_LEDGER_ADMIN": "",
-  #     "HOST_ML_API_ADAPTER": "http://dev2-ml-api-adapter.mojaloop.live",
-  #     "HOST_CENTRAL_LEDGER": "http://dev2-central-ledger.mojaloop.live",
-  #     "HOST_QUOTING_SERVICE": "http://dev2-quoting-service.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_SERVICE": "http://dev2-account-lookup.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_SERVICE_ADMIN": "http://dev2-account-lookup-admin.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_ADMIN": "http://dev2-account-lookup-admin.mojaloop.live",
-  #     "HOST_SIMULATOR": "http://dev2-simulator.mojaloop.live",
-  #     "HOST_CENTRAL_SETTLEMENT": "http://dev2-central-settlement.mojaloop.live/v1",
-  #     "HOST_TRANSACTION_REQUESTS_SERVICE": "http://dev2-transaction-requests-service.mojaloop.live",
-  #     "CALLBACK_ENDPOINT_BASE_URL": "http://dev-testing-toolkit-specapi.mojaloop.live",
+  #     "HOST_ML_API_ADAPTER": "http://dev2-ml-api-adapter.mojaloop.dev",
+  #     "HOST_CENTRAL_LEDGER": "http://dev2-central-ledger.mojaloop.dev",
+  #     "HOST_QUOTING_SERVICE": "http://dev2-quoting-service.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_SERVICE": "http://dev2-account-lookup.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_SERVICE_ADMIN": "http://dev2-account-lookup-admin.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_ADMIN": "http://dev2-account-lookup-admin.mojaloop.dev",
+  #     "HOST_SIMULATOR": "http://dev2-simulator.mojaloop.dev",
+  #     "HOST_CENTRAL_SETTLEMENT": "http://dev2-central-settlement.mojaloop.dev/v1",
+  #     "HOST_TRANSACTION_REQUESTS_SERVICE": "http://dev2-transaction-requests-service.mojaloop.dev",
+  #     "CALLBACK_ENDPOINT_BASE_URL": "http://dev-testing-toolkit-specapi.mojaloop.dev",
   #     "payerIdType": "MSISDN",
   #     "payerIdentifier": "17039811907",
   #     "payerfspEmail": "some.email@gmail.com",
@@ -5302,23 +5302,23 @@ ml-ttk-posthook-setup:
   #     "testfsp2Identifier": "17039811907",
   #     "testfsp2Email": "some.email@gmail.com",
   #     "hubEmail": "some.email@gmail.com",
-  #     "HOST_BULK_ADAPTER": "http://dev2-bulk-api-adapter.mojaloop.live",
-  #     "HOST_LEGACY_SIMULATOR": "http://dev2-simulator.mojaloop.live",
+  #     "HOST_BULK_ADAPTER": "http://dev2-bulk-api-adapter.mojaloop.dev",
+  #     "HOST_LEGACY_SIMULATOR": "http://dev2-simulator.mojaloop.dev",
   #     "validCondition2": "kPLCKM62VY2jbekuw3apCTBg5zk_mVs9DD8-XpljQms",
   #     "validIlpPacket2": "AYIC9AAAAAAAABdwHWcucGF5ZWVmc3AubXNpc2RuLjIyNTU2OTk5MTI1ggLKZXlKMGNtRnVjMkZqZEdsdmJrbGtJam9pWmpRMFltUmtOV010WXpreE1DMDBZVGt3TFRoa05qa3RaR0ppWVRaaVl6aGxZVFpqSWl3aWNYVnZkR1ZKWkNJNklqVTBaRFZtTURsaUxXRTBOMlF0TkRCa05pMWhZVEEzTFdFNVkyWXpZbUl5TkRsaFpDSXNJbkJoZVdWbElqcDdJbkJoY25SNVNXUkpibVp2SWpwN0luQmhjblI1U1dSVWVYQmxJam9pVFZOSlUwUk9JaXdpY0dGeWRIbEpaR1Z1ZEdsbWFXVnlJam9pTWpJMU5UWTVPVGt4TWpVaUxDSm1jM0JKWkNJNkluQmhlV1ZsWm5Od0luMTlMQ0p3WVhsbGNpSTZleUp3WVhKMGVVbGtTVzVtYnlJNmV5SndZWEowZVVsa1ZIbHdaU0k2SWsxVFNWTkVUaUlzSW5CaGNuUjVTV1JsYm5ScFptbGxjaUk2SWpJeU5UQTNNREE0TVRneElpd2labk53U1dRaU9pSndZWGxsY21aemNDSjlMQ0p3WlhKemIyNWhiRWx1Wm04aU9uc2lZMjl0Y0d4bGVFNWhiV1VpT25zaVptbHljM1JPWVcxbElqb2lUV0YwY3lJc0lteGhjM1JPWVcxbElqb2lTR0ZuYldGdUluMHNJbVJoZEdWUFprSnBjblJvSWpvaU1UazRNeTB4TUMweU5TSjlmU3dpWVcxdmRXNTBJanA3SW1GdGIzVnVkQ0k2SWpZd0lpd2lZM1Z5Y21WdVkza2lPaUpWVTBRaWZTd2lkSEpoYm5OaFkzUnBiMjVVZVhCbElqcDdJbk5qWlc1aGNtbHZJam9pVkZKQlRsTkdSVklpTENKcGJtbDBhV0YwYjNJaU9pSlFRVmxGVWlJc0ltbHVhWFJwWVhSdmNsUjVjR1VpT2lKRFQwNVRWVTFGVWlKOWZRAA",
   #     "currency2": "USD",
-  #     "PAYERFSP_SDK_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/sdktest",
-  #     "PAYEEFSP_SDK_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/sdktest",
-  #     "TESTFSP1_SDK_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/sdktest",
-  #     "TESTFSP2_SDK_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/sdktest",
-  #     "PAYERFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/test",
-  #     "PAYEEFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/test",
-  #     "TESTFSP1_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/test",
-  #     "TESTFSP2_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/test",
-  #     "PAYERFSP_CALLBACK_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/inbound",
-  #     "PAYEEFSP_CALLBACK_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/inbound",
-  #     "TESTFSP1_CALLBACK_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/inbound",
-  #     "TESTFSP2_CALLBACK_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/inbound",
+  #     "PAYERFSP_SDK_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/sdktest",
+  #     "PAYEEFSP_SDK_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/sdktest",
+  #     "TESTFSP1_SDK_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/sdktest",
+  #     "TESTFSP2_SDK_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/sdktest",
+  #     "PAYERFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/test",
+  #     "PAYEEFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/test",
+  #     "TESTFSP1_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/test",
+  #     "TESTFSP2_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/test",
+  #     "PAYERFSP_CALLBACK_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/inbound",
+  #     "PAYEEFSP_CALLBACK_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/inbound",
+  #     "TESTFSP1_CALLBACK_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/inbound",
+  #     "TESTFSP2_CALLBACK_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/inbound",
   #     "acceptParticipants": "application/vnd.interoperability.participants+json;version=1.0",
   #     "contentTypeParticipants": "application/vnd.interoperability.participants+json;version=1.0",
   #     "toIdValueDelete": "27713803913",
@@ -5338,7 +5338,7 @@ ml-ttk-posthook-tests:
     testCasesPathInZip: testing-toolkit-test-cases-master/collections/hub/sequence
     # awsS3BucketName: mojaloop-oss-qa-results
     # awsS3FilePath: ttk-tests/reports
-    # ttkBackendURL: http://dev-testing-toolkit-adminapi.mojaloop.live
+    # ttkBackendURL: http://dev-testing-toolkit-adminapi.mojaloop.dev
     testSuiteName: Test run after deployment
     environmentName: DEV2
 
@@ -5397,15 +5397,15 @@ ml-ttk-posthook-tests:
   #     "fspiopSignature": "{\"signature\":\"iU4GBXSfY8twZMj1zXX1CTe3LDO8Zvgui53icrriBxCUF_wltQmnjgWLWI4ZUEueVeOeTbDPBZazpBWYvBYpl5WJSUoXi14nVlangcsmu2vYkQUPmHtjOW-yb2ng6_aPfwd7oHLWrWzcsjTF-S4dW7GZRPHEbY_qCOhEwmmMOnE1FWF1OLvP0dM0r4y7FlnrZNhmuVIFhk_pMbEC44rtQmMFv4pm4EVGqmIm3eyXz0GkX8q_O1kGBoyIeV_P6RRcZ0nL6YUVMhPFSLJo6CIhL2zPm54Qdl2nVzDFWn_shVyV0Cl5vpcMJxJ--O_Zcbmpv6lxqDdygTC782Ob3CNMvg\\\",\\\"protectedHeader\\\":\\\"eyJhbGciOiJSUzI1NiIsIkZTUElPUC1VUkkiOiIvdHJhbnNmZXJzIiwiRlNQSU9QLUhUVFAtTWV0aG9kIjoiUE9TVCIsIkZTUElPUC1Tb3VyY2UiOiJPTUwiLCJGU1BJT1AtRGVzdGluYXRpb24iOiJNVE5Nb2JpbGVNb25leSIsIkRhdGUiOiIifQ\"}",
   #     "HUB_OPERATOR_BEARER_TOKEN": "NOT_APPLICABLE",
   #     "BASE_CENTRAL_LEDGER_ADMIN": "",
-  #     "HOST_ML_API_ADAPTER": "http://dev2-ml-api-adapter.mojaloop.live",
-  #     "HOST_CENTRAL_LEDGER": "http://dev2-central-ledger.mojaloop.live",
-  #     "HOST_QUOTING_SERVICE": "http://dev2-quoting-service.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_SERVICE": "http://dev2-account-lookup.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_SERVICE_ADMIN": "http://dev2-account-lookup-admin.mojaloop.live",
-  #     "HOST_ACCOUNT_LOOKUP_ADMIN": "http://dev2-account-lookup-admin.mojaloop.live",
-  #     "HOST_SIMULATOR": "http://dev2-simulator.mojaloop.live",
-  #     "HOST_CENTRAL_SETTLEMENT": "http://dev2-central-settlement.mojaloop.live/v1",
-  #     "HOST_TRANSACTION_REQUESTS_SERVICE": "http://dev2-transaction-requests-service.mojaloop.live",
+  #     "HOST_ML_API_ADAPTER": "http://dev2-ml-api-adapter.mojaloop.dev",
+  #     "HOST_CENTRAL_LEDGER": "http://dev2-central-ledger.mojaloop.dev",
+  #     "HOST_QUOTING_SERVICE": "http://dev2-quoting-service.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_SERVICE": "http://dev2-account-lookup.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_SERVICE_ADMIN": "http://dev2-account-lookup-admin.mojaloop.dev",
+  #     "HOST_ACCOUNT_LOOKUP_ADMIN": "http://dev2-account-lookup-admin.mojaloop.dev",
+  #     "HOST_SIMULATOR": "http://dev2-simulator.mojaloop.dev",
+  #     "HOST_CENTRAL_SETTLEMENT": "http://dev2-central-settlement.mojaloop.dev/v1",
+  #     "HOST_TRANSACTION_REQUESTS_SERVICE": "http://dev2-transaction-requests-service.mojaloop.dev",
   #     "CALLBACK_ENDPOINT_BASE_URL": "http://d2-116-2-ml-testing-toolkit",
   #     "payerIdType": "MSISDN",
   #     "payerIdentifier": "17039811907",
@@ -5420,23 +5420,23 @@ ml-ttk-posthook-tests:
   #     "testfsp2Identifier": "17039811907",
   #     "testfsp2Email": "some.email@gmail.com",
   #     "hubEmail": "some.email@gmail.com",
-  #     "HOST_BULK_ADAPTER": "http://dev2-bulk-api-adapter.mojaloop.live",
-  #     "HOST_LEGACY_SIMULATOR": "http://dev2-simulator.mojaloop.live",
+  #     "HOST_BULK_ADAPTER": "http://dev2-bulk-api-adapter.mojaloop.dev",
+  #     "HOST_LEGACY_SIMULATOR": "http://dev2-simulator.mojaloop.dev",
   #     "validCondition2": "kPLCKM62VY2jbekuw3apCTBg5zk_mVs9DD8-XpljQms",
   #     "validIlpPacket2": "AYIC9AAAAAAAABdwHWcucGF5ZWVmc3AubXNpc2RuLjIyNTU2OTk5MTI1ggLKZXlKMGNtRnVjMkZqZEdsdmJrbGtJam9pWmpRMFltUmtOV010WXpreE1DMDBZVGt3TFRoa05qa3RaR0ppWVRaaVl6aGxZVFpqSWl3aWNYVnZkR1ZKWkNJNklqVTBaRFZtTURsaUxXRTBOMlF0TkRCa05pMWhZVEEzTFdFNVkyWXpZbUl5TkRsaFpDSXNJbkJoZVdWbElqcDdJbkJoY25SNVNXUkpibVp2SWpwN0luQmhjblI1U1dSVWVYQmxJam9pVFZOSlUwUk9JaXdpY0dGeWRIbEpaR1Z1ZEdsbWFXVnlJam9pTWpJMU5UWTVPVGt4TWpVaUxDSm1jM0JKWkNJNkluQmhlV1ZsWm5Od0luMTlMQ0p3WVhsbGNpSTZleUp3WVhKMGVVbGtTVzVtYnlJNmV5SndZWEowZVVsa1ZIbHdaU0k2SWsxVFNWTkVUaUlzSW5CaGNuUjVTV1JsYm5ScFptbGxjaUk2SWpJeU5UQTNNREE0TVRneElpd2labk53U1dRaU9pSndZWGxsY21aemNDSjlMQ0p3WlhKemIyNWhiRWx1Wm04aU9uc2lZMjl0Y0d4bGVFNWhiV1VpT25zaVptbHljM1JPWVcxbElqb2lUV0YwY3lJc0lteGhjM1JPWVcxbElqb2lTR0ZuYldGdUluMHNJbVJoZEdWUFprSnBjblJvSWpvaU1UazRNeTB4TUMweU5TSjlmU3dpWVcxdmRXNTBJanA3SW1GdGIzVnVkQ0k2SWpZd0lpd2lZM1Z5Y21WdVkza2lPaUpWVTBRaWZTd2lkSEpoYm5OaFkzUnBiMjVVZVhCbElqcDdJbk5qWlc1aGNtbHZJam9pVkZKQlRsTkdSVklpTENKcGJtbDBhV0YwYjNJaU9pSlFRVmxGVWlJc0ltbHVhWFJwWVhSdmNsUjVjR1VpT2lKRFQwNVRWVTFGVWlKOWZRAA",
   #     "currency2": "USD",
-  #     "PAYERFSP_SDK_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/sdktest",
-  #     "PAYEEFSP_SDK_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/sdktest",
-  #     "TESTFSP1_SDK_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/sdktest",
-  #     "TESTFSP2_SDK_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/sdktest",
-  #     "PAYERFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/test",
-  #     "PAYEEFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/test",
-  #     "TESTFSP1_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/test",
-  #     "TESTFSP2_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/test",
-  #     "PAYERFSP_CALLBACK_URL": "http://dev2-sim-payerfsp.mojaloop.live/sim/payerfsp/inbound",
-  #     "PAYEEFSP_CALLBACK_URL": "http://dev2-sim-payeefsp.mojaloop.live/sim/payeefsp/inbound",
-  #     "TESTFSP1_CALLBACK_URL": "http://dev2-sim-testfsp1.mojaloop.live/sim/testfsp1/inbound",
-  #     "TESTFSP2_CALLBACK_URL": "http://dev2-sim-testfsp2.mojaloop.live/sim/testfsp2/inbound",
+  #     "PAYERFSP_SDK_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/sdktest",
+  #     "PAYEEFSP_SDK_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/sdktest",
+  #     "TESTFSP1_SDK_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/sdktest",
+  #     "TESTFSP2_SDK_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/sdktest",
+  #     "PAYERFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/test",
+  #     "PAYEEFSP_BACKEND_TESTAPI_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/test",
+  #     "TESTFSP1_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/test",
+  #     "TESTFSP2_BACKEND_TESTAPI_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/test",
+  #     "PAYERFSP_CALLBACK_URL": "http://dev2-sim-payerfsp.mojaloop.dev/sim/payerfsp/inbound",
+  #     "PAYEEFSP_CALLBACK_URL": "http://dev2-sim-payeefsp.mojaloop.dev/sim/payeefsp/inbound",
+  #     "TESTFSP1_CALLBACK_URL": "http://dev2-sim-testfsp1.mojaloop.dev/sim/testfsp1/inbound",
+  #     "TESTFSP2_CALLBACK_URL": "http://dev2-sim-testfsp2.mojaloop.dev/sim/testfsp2/inbound",
   #     "acceptParticipants": "application/vnd.interoperability.participants+json;version=1.0",
   #     "contentTypeParticipants": "application/vnd.interoperability.participants+json;version=1.0",
   #     "toIdValueDelete": "27713803913",
