@@ -1,7 +1,7 @@
 # Deployment Guide
 
 This guide details how you can deploy Mojaloop and the PISP functionality.
-It's a heavy work in progress, 
+It's a heavy work in progress, so not all steps will work for your cluster.
 ## Prerequisuites
 
 - `helm`, `kubectl`, `kubens`
@@ -16,8 +16,9 @@ git clone helm...
 ```
 ## Installing Core Mojaloop + Thirdparty
 
-
 ```bash
+cd docs/deployment_guide
+
 # first, create a namespace for us to work in
 kubectl create namespace pisp-test
 kubens pisp-test
@@ -29,26 +30,25 @@ helm repo add kiwigrid https://kiwigrid.github.io
 helm repo add elastic https://helm.elastic.co
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
+# install mojaloop
+helm upgrade --install  --namespace ml-app mojaloop mojaloop/mojaloop  -f ./values_mojaloop.yaml --wait --timeout 15m
 
-helm upgrade --install  --namespace ml-app mojaloop mojaloop/mojaloop  -f ./config/values_mojaloop.yaml --wait --timeout 15m
-
+# install an ingress controller
 helm --namespace kube-public install ingress ingress-nginx/ingress-nginx
 kubens kube-public
 kubectl get service/ingress-ingress-nginx-controller
 
-ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com
+# output is: something like
+# ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com
+export ELB_URL=<your ingress url>
+
+curl -H "Host: account-lookup-service.local" $ELB_URL/health
+curl -H "Host: ml-api-adapter.local" $ELB_URL/health
+curl -H "Host: central-ledger.local" $ELB_URL/health
 ```
 
-6. health checks
+[ todo: kong api gateway? that might make things easier... also the ml-seeder might need it...]
 
-```bash
-curl -H "Host: account-lookup-service.local" ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com/health
-curl -H "Host: ml-api-adapter.local" ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com/health
-curl -H "Host: central-ledger.local" ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com/health
-```
-
-
-```
 
 ## Installing PISP + DFSP Simulators
 
