@@ -49,7 +49,6 @@ curl -H "Host: account-lookup-service.dev" $ELB_URL/health
 curl -H "Host: ml-api-adapter.dev" $ELB_URL/health
 curl -H "Host: central-ledger.dev" $ELB_URL/health
 
-
 # install the thirdparty charts
 kubectl apply -f $BASE_DIR/helm/thirdparty/thirdparty_base_oracle.yaml
 helm upgrade --install thirdparty $BASE_DIR/helm/thirdparty -f $BASE_DIR/helm/thirdparty/values.yaml
@@ -60,7 +59,6 @@ helm upgrade --install thirdparty $BASE_DIR/helm/thirdparty -f $BASE_DIR/helm/th
 ```bash
 helm repo add kong https://charts.konghq.com
 helm repo update
-# helm install kong kong/kong --set ingressController.installCRDs=false
 
 # install kong with custom config
 helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./kong_values.yaml
@@ -85,8 +83,7 @@ curl beta.moja-lab.live/pisp-test/api/thirdparty/consentRequests
 curl beta.moja-lab.live/pisp-test/api/thirdparty/thirdpartyRequests/transactions/
 curl beta.moja-lab.live/pisp-test/api/thirdparty/authorizations
 
-
-# health checks
+# health checks - these should all pass
 curl beta.moja-lab.live/pisp-test/api/admin/central-ledger/health
 curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service/health
 curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service-admin/health
@@ -97,9 +94,26 @@ curl beta.moja-lab.live/pisp-test/api/admin/oracle-consent/health
 curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-tx-requests-service/health
 ```
 
-
-
 ## Installing PISP + DFSP Simulators
+
+In this step we will set up simulators and ttk instances for:
+- 1 PISP
+- 1 DFSP with PISP enabled (will be the sender)
+- 1 Vanilla DFSP
+- 1 TTK to act as a PISP
+- 1 TTK to act as a DFSP
+
+```bash
+# install simulators
+helm upgrade --install pisp-poc-dfspa $BASE_DIR/helm/thirdparty-simulator -f  $BASE_DIR/helm/thirdparty-simulator/values_dfspa.yml
+helm upgrade --install pisp-poc-dfspb $BASE_DIR/helm/thirdparty-simulator -f  $BASE_DIR/helm/thirdparty-simulator/values_dfspb.yml
+helm upgrade --install pisp-poc-pispa $BASE_DIR/helm/thirdparty-simulator -f  $BASE_DIR/helm/thirdparty-simulator/values_pispa.yml
+
+# install ttk instances
+helm upgrade --install --namespace pisp-test pig-ttk mojaloop/ml-testing-toolkit --values ./values-ttk-pig.yaml
+
+```
+
 
 ## Configuring 
 
