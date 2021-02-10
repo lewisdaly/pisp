@@ -9,10 +9,14 @@ It's a heavy work in progress, so not all steps will work for your cluster.
 - Configured storage drivers
 - Cloned the following repos:
 ```bash
+# change basedir to wherever you will work
+export BASE_DIR="/home/lew/developer/mojaloop"
+cd $BASE_DIR
 # todo: proper urls with branches etc
 git clone pisp
 git clone ml-seeder
-git clone helm...
+git clone -b feat/initial-pisp-charts git@github.com:vessels-tech/helm.git
+
 ```
 ## Installing Core Mojaloop + Thirdparty
 
@@ -44,6 +48,27 @@ export ELB_URL=<your ingress url>
 curl -H "Host: account-lookup-service.dev" $ELB_URL/health
 curl -H "Host: ml-api-adapter.dev" $ELB_URL/health
 curl -H "Host: central-ledger.dev" $ELB_URL/health
+
+
+# install the thirdparty charts
+kubectl apply -f $BASE_DIR/helm/thirdparty/thirdparty_base_oracle.yaml
+helm upgrade --install thirdparty $BASE_DIR/helm/thirdparty -f $BASE_DIR/helm/thirdparty/values.yaml
+```
+
+## Installing and configuring the API Gateway
+
+```bash
+helm repo add kong https://charts.konghq.com
+helm repo update
+# helm install kong kong/kong --set ingressController.installCRDs=false
+
+# install kong with custom config
+helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./kong_values.yaml
+
+# set up our own ingress
+kubectl apply -f ./ingress_kong_thirdparty.yaml
+
+
 ```
 
 [ 
@@ -58,3 +83,11 @@ curl -H "Host: central-ledger.dev" $ELB_URL/health
 ## Installing PISP + DFSP Simulators
 
 ## Configuring 
+
+
+## Known Issues:
+
+- duplicate transaction-requests-service
+- using Kong API Gateway
+    - routing rules for `/thirdpartyRequests/...` are likely to be wrong
+- Doesn't the auth-service need a database?

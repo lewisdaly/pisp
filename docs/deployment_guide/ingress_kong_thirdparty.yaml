@@ -1,0 +1,87 @@
+# Ingresses and request mappings for Kong API Gateway to talk to the FSPIOP API
+
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: thirdparty-rewrite
+config:
+  replace:
+    uri: "/$(uri_captures[1])"
+plugin: request-transformer
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: thirdparty-main
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: thirdparty-rewrite
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pisp-test/api/thirdparty/(accounts.*)
+            backend:
+              serviceName: thirdparty-api-adapter
+              servicePort: 3008
+          - path: /pisp-test/api/thirdparty/(consents.*)
+            backend:
+              serviceName: thirdparty-api-adapter
+              servicePort: 3008
+          - path: /pisp-test/api/thirdparty/(consents.*)
+            backend:
+              serviceName: thirdparty-api-adapter
+              servicePort: 3008
+          # TODO: not sure if this will work
+          # come back to this
+          - path: /pisp-test/api/thirdparty/(thirdpartyRequests/.*)
+            backend:
+              serviceName: thirdparty-api-adapter
+              servicePort: 3008
+          - path: /pisp-test/api/thirdparty/(authorizations.*)
+            backend:
+              serviceName: thirdparty-tx-requests-service
+              servicePort: 4003
+
+---
+# expose health checks for each pisp related service
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: thirdparty-rewrite-health
+config:
+  add:
+    headers:
+      - x-new-header:newvalue
+  replace:
+    uri: "/health"
+plugin: request-transformer
+---
+# Ingresses for Kong API Gateway to talk to the FSPIOP API
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: thirdparty-health
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: thirdparty-rewrite-health
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pisp-test/api/admin/thirdparty-api-adapter/health
+            backend:
+              serviceName: thirdparty-api-adapter
+              servicePort: 3008
+          - path: /pisp-test/api/admin/auth-service/health
+            backend:
+              serviceName: auth-service
+              servicePort: 4004
+          - path: /pisp-test/api/admin/oracle-consent/health
+            backend:
+              serviceName: oracle-consent
+              servicePort: 3000
+          - path: /pisp-test/api/admin/thirdparty-tx-requests-service/health
+            backend:
+              serviceName: thirdparty-tx-requests-service
+              servicePort: 4003
