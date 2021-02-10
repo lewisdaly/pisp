@@ -9,7 +9,6 @@
     centralLedgerAdmin: 'http://beta.moja-lab.live/pisp-test/api/admin/central-ledger',
   },
   applicationUrls: {
-    // TODO: expose this!
     oracle: 'http://beta.moja-lab.live/pisp-test/api/admin/oracle-simulator'
   },
   participants: [
@@ -20,8 +19,8 @@
       // to get this value before setting it :(
       settlementAccountId: '18',
       simulatorAdminUrl: 'http://dfspa-backend.beta.moja-lab.live',
-      fspiopCallbackUrl: 'http://mojaloop-sim-dfspa-sdk-scheme-adapter:4000',
-      thirdpartyCallbackUrl: 'http://mojaloop-sim-dfspa-thirdparty-scheme-adapter:4000',
+      fspiopCallbackUrl: 'http://dfspa-sdk-scheme-adapter.beta.moja-lab.live',
+      thirdpartyCallbackUrl: 'http://dfspa-thirdparty-scheme-adapter.beta.moja-lab.live',
       parties: [
         {
           displayName: "Alice Alpaca",
@@ -55,64 +54,64 @@
         },
       ]
     },
-    {
-      id: 'dfspb',
-      type: 'DFSP',
-      // TODO: this is a hack for now, but we actually need to query the admin-api
-      // to get this value before setting it :(
-      settlementAccountId: '20',
-      // For our demo, Participants are on the same deployment as switch
-      simulatorAdminUrl: 'http://bananabank-backend.beta.moja-lab.live',
-      fspiopCallbackUrl: 'http://mojaloop-sim-bananabank-scheme-adapter:4000',
-      thirdpartyCallbackUrl: 'n/a',
-      parties: [
-        {
-          displayName: "Bob Bobbish",
-          firstName: "Bob",
-          middleName: "B",
-          lastName: "Bobbish",
-          dateOfBirth: "1970-01-01",
-          idType: "MSISDN",
-          idValue: "218493479"
-        },
-        {
-          displayName: "Belinda Bells",
-          firstName: "Belinda",
-          middleName: "B",
-          lastName: "Bells",
-          dateOfBirth: "1970-01-01",
-          idType: "MSISDN",
-          idValue: "292455793"
-        }
-      ]
-    },
-    {
-      id: 'pispa',
-      type: 'PISP',
-      // For PISP, 3p-scheme-adapter gets callbacks from switch
-      fspiopCallbackUrl: 'http://mojaloop-sim-pispa-sdk-scheme-adapter:4000',
-      thirdpartyCallbackUrl: 'http://mojaloop-sim-pispa-thirdparty-scheme-adapter:4000'
-    },
-    // Testing toolkits:
-    // TODO: double check!!
-    {
-      id: 'pig',
-      type: 'PISP',
-      fspiopCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
-      thirdpartyCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
-      parties: []
-    },
-    {
-      id: 'dog',
-      type: 'DFSP',
-      // TODO: this is a hack for now, but we actually need to query the admin-api
-      // to get this value before setting it :(
-      settlementAccountId: '34',
-      simulatorAdminUrl: 'http://dog-backend.beta.moja-lab.live',
-      fspiopCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
-      thirdpartyCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
-      parties: [
-      ]
-    },
+    // {
+    //   id: 'dfspb',
+    //   type: 'DFSP',
+    //   // TODO: this is a hack for now, but we actually need to query the admin-api
+    //   // to get this value before setting it :(
+    //   settlementAccountId: '20',
+    //   // For our demo, Participants are on the same deployment as switch
+    //   simulatorAdminUrl: 'http://bananabank-backend.beta.moja-lab.live',
+    //   fspiopCallbackUrl: 'http://mojaloop-sim-bananabank-scheme-adapter:4000',
+    //   thirdpartyCallbackUrl: 'n/a',
+    //   parties: [
+    //     {
+    //       displayName: "Bob Bobbish",
+    //       firstName: "Bob",
+    //       middleName: "B",
+    //       lastName: "Bobbish",
+    //       dateOfBirth: "1970-01-01",
+    //       idType: "MSISDN",
+    //       idValue: "218493479"
+    //     },
+    //     {
+    //       displayName: "Belinda Bells",
+    //       firstName: "Belinda",
+    //       middleName: "B",
+    //       lastName: "Bells",
+    //       dateOfBirth: "1970-01-01",
+    //       idType: "MSISDN",
+    //       idValue: "292455793"
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 'pispa',
+    //   type: 'PISP',
+    //   // For PISP, 3p-scheme-adapter gets callbacks from switch
+    //   fspiopCallbackUrl: 'http://mojaloop-sim-pispa-sdk-scheme-adapter:4000',
+    //   thirdpartyCallbackUrl: 'http://mojaloop-sim-pispa-thirdparty-scheme-adapter:4000'
+    // },
+    // // Testing toolkits:
+    // // TODO: double check!!
+    // {
+    //   id: 'pig',
+    //   type: 'PISP',
+    //   fspiopCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
+    //   thirdpartyCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
+    //   parties: []
+    // },
+    // {
+    //   id: 'dog',
+    //   type: 'DFSP',
+    //   // TODO: this is a hack for now, but we actually need to query the admin-api
+    //   // to get this value before setting it :(
+    //   settlementAccountId: '34',
+    //   simulatorAdminUrl: 'http://dog-backend.beta.moja-lab.live',
+    //   fspiopCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
+    //   thirdpartyCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
+    //   parties: [
+    //   ]
+    // },
   ]
 }

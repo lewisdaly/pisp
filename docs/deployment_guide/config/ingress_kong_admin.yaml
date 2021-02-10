@@ -71,3 +71,7 @@ spec:
             backend:
               serviceName: mojaloop-ml-api-adapter-service
               servicePort: 80
+          - path: /pisp-test/api/admin/oracle-simulator/(.*)
+            backend:
+              serviceName: mojaloop-simulator
+              servicePort: 80

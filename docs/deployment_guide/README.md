@@ -91,6 +91,7 @@ curl beta.moja-lab.live/pisp-test/api/admin/ml-api-adapter/health
 curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-api-adapter/health
 curl beta.moja-lab.live/pisp-test/api/admin/auth-service/health
 curl beta.moja-lab.live/pisp-test/api/admin/oracle-consent/health
+curl beta.moja-lab.live/pisp-test/api/admin/oracle-simulator/health
 curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-tx-requests-service/health
 ```
 
