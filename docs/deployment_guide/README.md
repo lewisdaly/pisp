@@ -35,7 +35,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 # install mojaloop
 # values_mojaloop.yaml specifies some special versions for 
 # pisp to run with (central-ledger, account-lookup-service)
-helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop -f ./values_mojaloop.yaml
+helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop -f ./config/values_mojaloop.yaml
 
 # install an ingress controller
 helm --namespace pisp-test install ingress ingress-nginx/ingress-nginx
@@ -61,12 +61,12 @@ helm repo add kong https://charts.konghq.com
 helm repo update
 
 # install kong with custom config
-helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./kong_values.yaml
+helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./config/kong_values.yaml
 
 # set up our own ingresses
-kubectl apply -f ./ingress_kong_thirdparty.yaml
-kubectl apply -f ./ingress_kong_fspiop.yaml
-kubectl apply -f ./ingress_kong_admin.yaml
+kubectl apply -f ./config/ingress_kong_thirdparty.yaml
+kubectl apply -f ./config/ingress_kong_fspiop.yaml
+kubectl apply -f ./config/ingress_kong_admin.yaml
 
 # test the endpoints are exposed correctly 
 # (these should throw errors, since GET isn't allowed, and we're not passing
@@ -110,12 +110,17 @@ helm upgrade --install pisp-poc-dfspb $BASE_DIR/helm/thirdparty-simulator -f  $B
 helm upgrade --install pisp-poc-pispa $BASE_DIR/helm/thirdparty-simulator -f  $BASE_DIR/helm/thirdparty-simulator/values_pispa.yml
 
 # install ttk instances
-helm upgrade --install --namespace pisp-test pig-ttk mojaloop/ml-testing-toolkit --values ./values-ttk-pig.yaml
-
+helm upgrade --install --namespace pisp-test pig-ttk mojaloop/ml-testing-toolkit --values ./config/values-ttk-pig.yaml
+helm upgrade --install --namespace pisp-test dog-ttk mojaloop/ml-testing-toolkit --values ./config/values-ttk-dog.yaml
 ```
 
-
 ## Configuring 
+
+Now we will use `ml-boostrap` to set up our switch and simulators from scratch
+
+```bash
+
+```
 
 
 ## Known Issues:
