@@ -97,11 +97,11 @@ curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-tx-requests-service/healt
 ## Installing PISP + DFSP Simulators
 
 In this step we will set up simulators and ttk instances for:
-- 1 PISP
-- 1 DFSP with PISP enabled (will be the sender)
-- 1 Vanilla DFSP
-- 1 TTK to act as a PISP
-- 1 TTK to act as a DFSP
+- `pispa` - a PISP
+- `dfspa` a DFSP with PISP enabled (will be the sender)
+- `dfspb` a Vanilla DFSP
+- `pig` a TTK to act as a PISP
+- `dog` a TTK to act as a DFSP
 
 ```bash
 # install simulators
@@ -112,6 +112,9 @@ helm upgrade --install pisp-poc-pispa $BASE_DIR/helm/thirdparty-simulator -f  $B
 # install ttk instances
 helm upgrade --install --namespace pisp-test pig-ttk mojaloop/ml-testing-toolkit --values ./config/values-ttk-pig.yaml
 helm upgrade --install --namespace pisp-test dog-ttk mojaloop/ml-testing-toolkit --values ./config/values-ttk-dog.yaml
+
+# install ingress for simulators and ttk instances
+# TODO
 ```
 
 ## Configuring 
