@@ -159,6 +159,10 @@ central:
         #  cpu: 100m
         #  memory: 128Mi
 
+    # centralledger-transfer-prepare:
+    #   fullname: 'testing1234'
+    #   name: 'testing5678'
+
     centralledger-handler-transfer-prepare:
       # Default values for central-ledger.
       # This is a YAML-formatted file.
