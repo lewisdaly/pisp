@@ -35,7 +35,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 # install mojaloop
 # values_mojaloop.yaml specifies some special versions for 
 # pisp to run with (central-ledger, account-lookup-service)
-helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop -f ./config/values_mojaloop.yaml
+helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop --version v11.0.0 -f ./config/values_mojaloop.yaml
 
 # install an ingress controller
 helm --namespace pisp-test install ingress ingress-nginx/ingress-nginx

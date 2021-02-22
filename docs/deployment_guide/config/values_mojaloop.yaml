@@ -131,7 +131,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -272,7 +272,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -411,7 +411,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -550,7 +550,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -689,7 +689,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -828,7 +828,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -967,7 +967,7 @@ central:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -1514,7 +1514,7 @@ central:
             externalPort: 3007
 
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /
       # Used to create an Ingress record.
       hosts:
@@ -1604,7 +1604,7 @@ central:
       periodSeconds: 15
 
     ingress:
-      enabled: true
+      enabled: false
       # Used to create an Ingress record.
       hosts:
         api: central-event-processor.dev
@@ -2000,7 +2000,7 @@ ml-api-adapter:
       internalPort: 3000
 
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /
       # Used to create an Ingress record.
       hosts:
@@ -2124,7 +2124,7 @@ ml-api-adapter:
       internalPort: 3000
 
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /
       # Used to create an Ingress record.
       hosts:
@@ -2225,7 +2225,7 @@ emailnotifier:
     periodSeconds: 15
 
   ingress:
-    enabled: true
+    enabled: false
     # Used to create an Ingress record.
     hosts:
       api: email-notifier.dev
@@ -2381,7 +2381,7 @@ account-lookup-service:
       port: 80
 
     ingress:
-      enabled: true
+      enabled: false
       annotations: {}
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
@@ -2503,7 +2503,7 @@ account-lookup-service:
       port: 80
 
     ingress:
-      enabled: true
+      enabled: false
       annotations: {}
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
@@ -2719,7 +2719,7 @@ account-lookup-service:
             externalPort: 3000
 
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /
       # Used to create an Ingress record.
       hosts:
@@ -2975,7 +2975,7 @@ quoting-service:
           externalPort: 3002
 
   ingress:
-    enabled: true
+    enabled: false
     externalPath: /
     # Used to create an Ingress record.
     hosts:
@@ -3065,7 +3065,7 @@ transaction-requests-service:
           externalPort: 4001
 
   ingress:
-    enabled: true
+    enabled: false
     externalPath: /
     # Used to create an Ingress record.
     hosts:
@@ -3152,7 +3152,7 @@ simulator:
     periodSeconds: 15
 
   ingress:
-    enabled: true
+    enabled: false
     annotations: {
       "nginx.ingress.kubernetes.io/rewrite-target": "/"
     }
@@ -3693,7 +3693,7 @@ mojaloop-simulator:
       failureThreshold: 3
 
   ingress:
-    enabled: true
+    enabled: false
     ingressPathRewriteRegex: "/"
     annotations: {
       "nginx.ingress.kubernetes.io/rewrite-target": "/",
@@ -4041,7 +4041,7 @@ mojaloop-bulk:
         internalPort: 8088
 
       ingress:
-        enabled: true
+        enabled: false
         externalPath: /
         # Used to create an Ingress record.
         hosts:
@@ -4313,7 +4313,7 @@ mojaloop-bulk:
               externalPort: 3001
 
       ingress:
-        enabled: true
+        enabled: false
         type: http
         externalPath:
           api: /
@@ -5045,7 +5045,7 @@ finance-portal:
     #   pullPolicy: Always
     #   port: 80
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /
       hosts: 
         api: dev2-finance-portal.mojaloop.dev
@@ -5072,7 +5072,7 @@ finance-portal:
         pullPolicy: Always
     env: 'dev'
     ingress:
-      enabled: true
+      enabled: false
       externalPath: /admin-portal-backend/
       hosts: 
         api: dev2-finance-portal.mojaloop.dev
@@ -5190,7 +5190,7 @@ ml-testing-toolkit:
   ml-testing-toolkit-backend:
     enabled: false
     ingress:
-      enabled: true
+      enabled: false
       hosts:
         dev2-testing-toolkit-specapi.mojaloop.dev:
           port: 5000
@@ -5227,9 +5227,9 @@ ml-testing-toolkit:
         "ILP_SECRET": "secret"
       }
   ml-testing-toolkit-frontend:
-    enabled: true
+    enabled: false
     ingress:
-      enabled: true
+      enabled: false
       hosts:
         dev2-testing-toolkit.mojaloop.dev:
           port: 6060
