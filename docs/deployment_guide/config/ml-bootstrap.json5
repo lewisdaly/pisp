@@ -3,13 +3,13 @@
 {
   currency: 'USD',
   urls: {
-    fspiop: 'http://beta.moja-lab.live/pisp-test/api/fspiop',
+    fspiop: 'http://192.168.0.91/api/fspiop',
     // TODO: thirdparty api
-    alsAdmin: 'http://beta.moja-lab.live/pisp-test/api/admin/account-lookup-service-admin',
-    centralLedgerAdmin: 'http://beta.moja-lab.live/pisp-test/api/admin/central-ledger',
+    alsAdmin: 'http://192.168.0.91/api/admin/account-lookup-service-admin',
+    centralLedgerAdmin: 'http://192.168.0.91/api/admin/central-ledger',
   },
   applicationUrls: {
-    oracle: 'http://beta.moja-lab.live/pisp-test/api/admin/oracle-simulator'
+    oracle: 'http://192.168.0.91/api/admin/oracle-simulator'
   },
   participants: [
     {
@@ -17,7 +17,7 @@
       type: 'DFSP',
       // TODO: this is a hack for now, but we actually need to query the admin-api
       // to get this value before setting it :(
-      settlementAccountId: '18',
+      settlementAccountId: '4',
       simulatorAdminUrl: 'http://dfspa-backend.beta.moja-lab.live',
       fspiopCallbackUrl: 'http://dfspa-sdk-scheme-adapter.beta.moja-lab.live',
       thirdpartyCallbackUrl: 'http://dfspa-thirdparty-scheme-adapter.beta.moja-lab.live',

@@ -129,7 +129,14 @@ kubectl apply -f ./config/ingress_simulators.yaml
 
 ## Configuring 
 
-Now we will use `ml-boostrap` to set up our switch and simulators from scratch
+Now we will use `ml-boostrap` to set up our switch and simulators from scratch.
+
+Edit the config file in `./config/ml-bootstrap.json5` and set (based on your `$ELB_URL` variable)
+- `urls.fspiop`
+- `urls.alsAdmin`
+- `urls.alsAdmin`
+- `applicationUrls.oracle`
+
 
 ```bash
 cd $BASE_DIR/ml-bootstrap
@@ -144,6 +151,10 @@ npm run ml-bootstrap -- parties -c $BASE_DIR/pisp/docs/deployment_guide/config/m
 
 ```
 
+## TODO:
+
+- update ml-boostrap to allow configuring multiple oracles
+
 
 ## Known Issues:
 
@@ -151,3 +162,25 @@ npm run ml-bootstrap -- parties -c $BASE_DIR/pisp/docs/deployment_guide/config/m
 - using Kong API Gateway
     - routing rules for `/thirdpartyRequests/...` are likely to be wrong
 - Doesn't the auth-service need a database?
+
+### Non deterministic settlement accounts:
+
+When boostrapping the DFSPs, if you see the following error:
+
+```
+    - Error: Status: 500 Message: {"errorInformation":{"errorCode":"2001","errorDescription":"Internal server error - The account does not match participant or currency specified"}}
+```
+
+This likely means that the `settlementAccountId` for the DFSP needs tweaking. ml-boostrap isn't currently smart enough to figure out the 
+`settlementAccountId` for you, so you have to do the following:
+
+1. Register the DFSP - and expect a failure
+2. Look up the DFSP's accounts with the following:
+```bash
+curl -s $ELB_URL/api/admin/central-ledger/participants/dfspa | jq 
+``` 
+3. Enter the correct value for the `settlementAccountId` in your `ml-boostrap.json5` file
+4. Re-run `ml-boostrap` (dfsps only)
+```bash
+npm run ml-bootstrap -- participants -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
+```
