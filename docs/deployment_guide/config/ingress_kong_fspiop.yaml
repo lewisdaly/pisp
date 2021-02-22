@@ -25,33 +25,33 @@ spec:
   rules:
     - http:
         paths:
-          - path: /pisp-test/api/fspiop/(participants.*)
+          - path: /api/fspiop/(participants.*)
             backend:
               serviceName: mojaloop-account-lookup-service
               servicePort: 80
-          - path: /pisp-test/api/fspiop/(parties.*)
+          - path: /api/fspiop/(parties.*)
             backend:
               serviceName: mojaloop-account-lookup-service
               servicePort: 80
-          - path: /pisp-test/api/fspiop/(transactionRequests.*)
+          - path: /api/fspiop/(transactionRequests.*)
             backend:
               serviceName: mojaloop-transaction-requests-service
               servicePort: 80
-          - path: /pisp-test/api/fspiop/(authorizations.*)
+          - path: /api/fspiop/(authorizations.*)
             backend:
               serviceName: mojaloop-transaction-requests-service
               servicePort: 80
-          - path: /pisp-test/api/fspiop/(quotes.*)
+          - path: /api/fspiop/(quotes.*)
             backend:
               serviceName: mojaloop-quoting-service
               servicePort: 80
-          - path: /pisp-test/api/fspiop/(transfers.*)
+          - path: /api/fspiop/(transfers.*)
             backend:
               serviceName: mojaloop-ml-api-adapter-service
               servicePort: 80
           # Example - for testing out rewrite rules
-          # - path: /pisp-test/api/bar/(participants.*)
-          - path: /pisp-test/api/bar
+          # - path: /api/bar/(participants.*)
+          - path: /api/bar
             backend:
               serviceName: echo
               servicePort: 80
@@ -82,27 +82,27 @@ spec:
   rules:
     - http:
         paths:
-          - path: /pisp-test/api/admin/participants/health
+          - path: /api/admin/participants/health
             backend:
               serviceName: mojaloop-account-lookup-service
               servicePort: 80
-          - path: /pisp-test/api/admin/parties/health
+          - path: /api/admin/parties/health
             backend:
               serviceName: mojaloop-account-lookup-service
               servicePort: 80
-          - path: /pisp-test/api/admin/transactionRequests/health
+          - path: /api/admin/transactionRequests/health
             backend:
               serviceName: mojaloop-transaction-requests-service
               servicePort: 80
-          - path: /pisp-test/api/admin/authorizations/health
+          - path: /api/admin/authorizations/health
             backend:
               serviceName: mojaloop-transaction-requests-service
               servicePort: 80
-          - path: /pisp-test/api/admin/quotes/health
+          - path: /api/admin/quotes/health
             backend:
               serviceName: mojaloop-quoting-service
               servicePort: 80
-          - path: /pisp-test/api/admin/transfers/health
+          - path: /api/admin/transfers/health
             backend:
               serviceName: mojaloop-ml-api-adapter-service
               servicePort: 80

@@ -20,25 +20,25 @@ spec:
   rules:
     - http:
         paths:
-          - path: /pisp-test/api/thirdparty/(accounts.*)
+          - path: /api/thirdparty/(accounts.*)
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
-          - path: /pisp-test/api/thirdparty/(consents.*)
+          - path: /api/thirdparty/(consents.*)
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
-          - path: /pisp-test/api/thirdparty/(consentRequests.*)
+          - path: /api/thirdparty/(consentRequests.*)
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
           # TODO: not sure if this will work
           # come back to this
-          - path: /pisp-test/api/thirdparty/(thirdpartyRequests/.*)
+          - path: /api/thirdparty/(thirdpartyRequests/.*)
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
-          - path: /pisp-test/api/thirdparty/(authorizations.*)
+          - path: /api/thirdparty/(authorizations.*)
             backend:
               serviceName: thirdparty-tx-requests-service
               servicePort: 4003
@@ -69,19 +69,19 @@ spec:
   rules:
     - http:
         paths:
-          - path: /pisp-test/api/admin/thirdparty-api-adapter/health
+          - path: /api/admin/thirdparty-api-adapter/health
             backend:
               serviceName: thirdparty-api-adapter
               servicePort: 3008
-          - path: /pisp-test/api/admin/auth-service/health
+          - path: /api/admin/auth-service/health
             backend:
               serviceName: auth-service
               servicePort: 4004
-          - path: /pisp-test/api/admin/oracle-consent/health
+          - path: /api/admin/oracle-consent/health
             backend:
               serviceName: oracle-consent
               servicePort: 3000
-          - path: /pisp-test/api/admin/thirdparty-tx-requests-service/health
+          - path: /api/admin/thirdparty-tx-requests-service/health
             backend:
               serviceName: thirdparty-tx-requests-service
               servicePort: 4003

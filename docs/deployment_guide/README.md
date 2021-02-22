@@ -41,13 +41,19 @@ helm upgrade --install --namespace pisp-test mojaloop mojaloop/mojaloop --versio
 helm --namespace pisp-test install ingress ingress-nginx/ingress-nginx
 kubectl get service/ingress-ingress-nginx-controller
 
+# For AWS based hosts:
 # output is: something like
 # ab7419cf221a94fdaa5ec1883f08e95e-639283179.eu-west-2.elb.amazonaws.com
 export ELB_URL=<your ingress url>
 
-curl -H "Host: account-lookup-service.dev" $ELB_URL/health
-curl -H "Host: ml-api-adapter.dev" $ELB_URL/health
+# for microk8s, use metallb to assign a local IP
+# microk8s enable metallb:192.168.0.90-192.168.0.95  
+# export ELB_URL=192.168.0.90
+curl -H "Host: ml-api-adapter.local" $ELB_URL/health
 curl -H "Host: central-ledger.dev" $ELB_URL/health
+
+# for microk8s, create your own storage class
+# kubectl apply -f ./config/storage_class_microk8s.yaml
 
 # install the thirdparty charts
 kubectl apply -f $BASE_DIR/helm/thirdparty/thirdparty_base_oracle.yaml
@@ -63,6 +69,9 @@ helm repo update
 # install kong with custom config
 helm upgrade --install --namespace pisp-test pisp-test-kong kong/kong -f ./config/kong_values.yaml
 
+# For microk8s, you will get a new IP from metalLB
+# export ELB_URL=192.168.0.91
+
 # set up our own ingresses
 kubectl apply -f ./config/ingress_kong_thirdparty.yaml
 kubectl apply -f ./config/ingress_kong_fspiop.yaml
@@ -71,28 +80,28 @@ kubectl apply -f ./config/ingress_kong_admin.yaml
 # test the endpoints are exposed correctly 
 # (these should throw errors, since GET isn't allowed, and we're not passing
 # in any headers
-curl beta.moja-lab.live/pisp-test/api/fspiop/participants
-curl beta.moja-lab.live/pisp-test/api/fspiop/parties
-curl beta.moja-lab.live/pisp-test/api/fspiop/transactionRequests
-curl beta.moja-lab.live/pisp-test/api/fspiop/authorizations
-curl beta.moja-lab.live/pisp-test/api/fspiop/quotes
-curl beta.moja-lab.live/pisp-test/api/fspiop/transfers
+curl $ELB_URL/api/fspiop/participants
+curl $ELB_URL/api/fspiop/parties
+curl $ELB_URL/api/fspiop/transactionRequests
+curl $ELB_URL/api/fspiop/authorizations
+curl $ELB_URL/api/fspiop/quotes
+curl $ELB_URL/api/fspiop/transfers
 
-curl beta.moja-lab.live/pisp-test/api/thirdparty/consents
-curl beta.moja-lab.live/pisp-test/api/thirdparty/consentRequests
-curl beta.moja-lab.live/pisp-test/api/thirdparty/thirdpartyRequests/transactions/
-curl beta.moja-lab.live/pisp-test/api/thirdparty/authorizations
+curl $ELB_URL/api/thirdparty/consents
+curl $ELB_URL/api/thirdparty/consentRequests
+curl $ELB_URL/api/thirdparty/thirdpartyRequests/transactions/
+curl $ELB_URL/api/thirdparty/authorizations
 
 # health checks - these should all pass
-curl beta.moja-lab.live/pisp-test/api/admin/central-ledger/health
-curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service/health
-curl beta.moja-lab.live/pisp-test/api/admin/account-lookup-service-admin/health
-curl beta.moja-lab.live/pisp-test/api/admin/ml-api-adapter/health
-curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-api-adapter/health
-curl beta.moja-lab.live/pisp-test/api/admin/auth-service/health
-curl beta.moja-lab.live/pisp-test/api/admin/oracle-consent/health
-curl beta.moja-lab.live/pisp-test/api/admin/oracle-simulator/health
-curl beta.moja-lab.live/pisp-test/api/admin/thirdparty-tx-requests-service/health
+curl $ELB_URL/api/admin/central-ledger/health
+curl $ELB_URL/api/admin/account-lookup-service/health
+curl $ELB_URL/api/admin/account-lookup-service-admin/health
+curl $ELB_URL/api/admin/ml-api-adapter/health
+curl $ELB_URL/api/admin/thirdparty-api-adapter/health
+curl $ELB_URL/api/admin/auth-service/health
+curl $ELB_URL/api/admin/oracle-consent/health
+curl $ELB_URL/api/admin/oracle-simulator/health
+curl $ELB_URL/api/admin/thirdparty-tx-requests-service/health
 ```
 
 ## Installing PISP + DFSP Simulators
