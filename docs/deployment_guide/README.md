@@ -125,6 +125,21 @@ helm upgrade --install --namespace pisp-test dog-ttk mojaloop/ml-testing-toolkit
 
 # install ingress for simulators and ttk instances
 kubectl apply -f ./config/ingress_simulators.yaml
+kubectl apply -f ./config/ingress_ttk.yaml
+
+
+# now we can test the ingresses:
+curl $ELB_URL/dfspa/simulator/repository/parties
+curl $ELB_URL/dfspa/sdk-scheme-adapter/health
+curl $ELB_URL/dfspa/thirdparty-scheme-adapter/health
+...
+
+# for the ttk instances, we need to (sadly) configure out /etc/hosts - for example
+# mojaloop hacks
+## 192.168.0.91	pig-ttk.alpha.moja-lab.live dog-ttk.alpha.moja-lab.live
+
+curl pig-ttk.alpha.moja-lab.live
+curl dog-ttk.alpha.moja-lab.live
 ```
 
 ## Configuring 
@@ -137,7 +152,6 @@ Edit the config file in `./config/ml-bootstrap.json5` and set (based on your `$E
 - `urls.alsAdmin`
 - `applicationUrls.oracle`
 
-
 ```bash
 cd $BASE_DIR/ml-bootstrap
 npm run ml-bootstrap -- hub -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
@@ -149,6 +163,8 @@ npm run ml-bootstrap -- participants -c $BASE_DIR/pisp/docs/deployment_guide/con
 npm run ml-bootstrap -- parties -c $BASE_DIR/pisp/docs/deployment_guide/config/ml-bootstrap.json5
 
 
+# check that the parties have been registered at the simulators:
+curl $ELB_URL/dfspa/simulator/repository/parties
 ```
 
 ## TODO:

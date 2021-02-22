@@ -21,7 +21,36 @@ metadata:
     konghq.com/plugins: simulators-rewrite
 spec:
   rules:
-    # dfspa
+    - http:
+        paths:
+          # dfspa - path based
+          - path: /dfspa/simulator/(.*)
+            backend:
+              serviceName: dfspa-mojaloop-simulator
+              servicePort: 3003
+          - path: /dfspa/sdk-scheme-adapter/(.*)
+            backend:
+              serviceName: dfspa-sdk-scheme-adapter
+              servicePort: 4000
+          - path: /dfspa/thirdparty-scheme-adapter/(.*)
+            backend:
+              serviceName: dfspa-thirdparty-scheme-adapter
+              servicePort: 4005
+          # dfspb - path based
+          - path: /dfspb/simulator/(.*)
+            backend:
+              serviceName: dfspb-mojaloop-simulator
+              servicePort: 3003
+          - path: /dfspb/sdk-scheme-adapter/(.*)
+            backend:
+              serviceName: dfspb-sdk-scheme-adapter
+              servicePort: 4000
+          - path: /dfspb/thirdparty-scheme-adapter/(.*)
+            backend:
+              serviceName: dfspb-thirdparty-scheme-adapter
+              servicePort: 4005
+
+    # dfspa - host based TODO - remove
     - host: dfspa-backend.beta.moja-lab.live
       http:
         paths:

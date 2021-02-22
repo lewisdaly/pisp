@@ -18,9 +18,9 @@
       // TODO: this is a hack for now, but we actually need to query the admin-api
       // to get this value before setting it :(
       settlementAccountId: '4',
-      simulatorAdminUrl: 'http://dfspa-backend.beta.moja-lab.live',
-      fspiopCallbackUrl: 'http://dfspa-sdk-scheme-adapter.beta.moja-lab.live',
-      thirdpartyCallbackUrl: 'http://dfspa-thirdparty-scheme-adapter.beta.moja-lab.live',
+      simulatorAdminUrl: 'http://192.168.0.91/dfspa/simulator',
+      fspiopCallbackUrl: 'http://192.168.0.91/dfspa/sdk-scheme-adapter',
+      thirdpartyCallbackUrl: 'http://192.168.0.91/dfspa/thirdparty-scheme-adapter',
       parties: [
         {
           displayName: "Alice Alpaca",
@@ -54,37 +54,36 @@
         },
       ]
     },
-    // {
-    //   id: 'dfspb',
-    //   type: 'DFSP',
-    //   // TODO: this is a hack for now, but we actually need to query the admin-api
-    //   // to get this value before setting it :(
-    //   settlementAccountId: '20',
-    //   // For our demo, Participants are on the same deployment as switch
-    //   simulatorAdminUrl: 'http://bananabank-backend.beta.moja-lab.live',
-    //   fspiopCallbackUrl: 'http://mojaloop-sim-bananabank-scheme-adapter:4000',
-    //   thirdpartyCallbackUrl: 'n/a',
-    //   parties: [
-    //     {
-    //       displayName: "Bob Bobbish",
-    //       firstName: "Bob",
-    //       middleName: "B",
-    //       lastName: "Bobbish",
-    //       dateOfBirth: "1970-01-01",
-    //       idType: "MSISDN",
-    //       idValue: "218493479"
-    //     },
-    //     {
-    //       displayName: "Belinda Bells",
-    //       firstName: "Belinda",
-    //       middleName: "B",
-    //       lastName: "Bells",
-    //       dateOfBirth: "1970-01-01",
-    //       idType: "MSISDN",
-    //       idValue: "292455793"
-    //     }
-    //   ]
-    // },
+    {
+      id: 'dfspb',
+      type: 'DFSP',
+      // TODO: this is a hack for now, but we actually need to query the admin-api
+      // to get this value before setting it :(
+      settlementAccountId: '6',
+      simulatorAdminUrl: 'http://192.168.0.91/dfspb/simulator',
+      fspiopCallbackUrl: 'http://192.168.0.91/dfspb/sdk-scheme-adapter',
+      thirdpartyCallbackUrl: 'n/a',
+      parties: [
+        {
+          displayName: "Bob Bobbish",
+          firstName: "Bob",
+          middleName: "B",
+          lastName: "Bobbish",
+          dateOfBirth: "1970-01-01",
+          idType: "MSISDN",
+          idValue: "218493479"
+        },
+        {
+          displayName: "Belinda Bells",
+          firstName: "Belinda",
+          middleName: "B",
+          lastName: "Bells",
+          dateOfBirth: "1970-01-01",
+          idType: "MSISDN",
+          idValue: "292455793"
+        }
+      ]
+    },
     // {
     //   id: 'pispa',
     //   type: 'PISP',
@@ -92,15 +91,14 @@
     //   fspiopCallbackUrl: 'http://mojaloop-sim-pispa-sdk-scheme-adapter:4000',
     //   thirdpartyCallbackUrl: 'http://mojaloop-sim-pispa-thirdparty-scheme-adapter:4000'
     // },
-    // // Testing toolkits:
-    // // TODO: double check!!
-    // {
-    //   id: 'pig',
-    //   type: 'PISP',
-    //   fspiopCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
-    //   thirdpartyCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
-    //   parties: []
-    // },
+    // Testing toolkits:
+    {
+      id: 'pig',
+      type: 'PISP',
+      fspiopCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
+      thirdpartyCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
+      parties: []
+    },
     // {
     //   id: 'dog',
     //   type: 'DFSP',
