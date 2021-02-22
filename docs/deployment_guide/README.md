@@ -184,11 +184,34 @@ If everything passes, then you know that the configuration is up and running ok!
 
 ## Testing the `CONSENT` Oracle
 
+```bash
+curl -s -X POST $ELB_URL/api/admin/account-lookup-service/participants/CONSENT/123 \
+  -H 'Accept: application/vnd.interoperability.participants+json;version=1' \
+  -H 'Content-Type: application/vnd.interoperability.participants+json;version=1.0' \
+  -H 'Date: 2021-02-09T03:07:11.718Z' \
+  -H 'FSPIOP-Source: dfspa' \
+  -d '{
+      "fspId": "dfspa"
+  }'
+
+curl -s -X GET $ELB_URL/api/admin/account-lookup-service/participants/CONSENT/123 \
+  -H 'Accept: application/vnd.interoperability.participants+json;version=1' \
+  -H 'Content-Type: application/vnd.interoperability.participants+json;version=1.0' \
+  -H 'Date: 2021-02-09T03:07:11.718Z' \
+  -H 'FSPIOP-Source: dog'
+```
+
+We should see an error in the dog ttk monitoring page - saying `Destination FSP Error`
+
+
+## Testing a PISP transfer from pig ttk
+
+`pig` ttk a ttk registered as a "PISP"
+
 
 
 ## TODO:
-
-- Update ml-bootstrap to allow configuring multiple oracles
+- PISP End To End Transfer with pig ttk
 - Deploy the pisp demo server and get the Android app running
 
 ## Known Issues:

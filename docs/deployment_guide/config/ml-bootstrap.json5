@@ -9,8 +9,8 @@
     centralLedgerAdmin: 'http://192.168.0.91/api/admin/central-ledger',
   },
   oracles: [
-    { oracleIdType: "MSISDN", endpoint: "http://192.168.0.91/api/admin/oracle-simulator"}
-    { oracleIdType: "CONSENT", endpoint: "http://192.168.0.91/api/admin/oracle-simulator"}
+    { oracleIdType: "MSISDN", endpoint: "http://192.168.0.91/api/admin/oracle-simulator"},
+    { oracleIdType: "CONSENT", endpoint: "http://192.168.0.91/api/admin/oracle-consent"},
   ],
   participants: [
     {
@@ -96,8 +96,8 @@
     {
       id: 'pig',
       type: 'PISP',
-      fspiopCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5050',
-      thirdpartyCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5050',
+      fspiopCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5000',
+      thirdpartyCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5000',
       parties: []
     },
     {
