@@ -8,9 +8,10 @@
     alsAdmin: 'http://192.168.0.91/api/admin/account-lookup-service-admin',
     centralLedgerAdmin: 'http://192.168.0.91/api/admin/central-ledger',
   },
-  applicationUrls: {
-    oracle: 'http://192.168.0.91/api/admin/oracle-simulator'
-  },
+  oracles: [
+    { oracleIdType: "MSISDN", endpoint: "http://192.168.0.91/api/admin/oracle-simulator"}
+    { oracleIdType: "CONSENT", endpoint: "http://192.168.0.91/api/admin/oracle-simulator"}
+  ],
   participants: [
     {
       id: 'dfspa',

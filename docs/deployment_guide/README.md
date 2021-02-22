@@ -169,9 +169,9 @@ curl $ELB_URL/dfspa/simulator/repository/parties
 
 ## Testing a P2P Transfer
 
-Now we can use
+Now we can use the TTK to test a simple P2P transfer.
 
-go to `http://dog-ttk.alpha.moja-lab.live/admin/outbound_request` in your browser, and load the sample 
+Go to `http://dog-ttk.alpha.moja-lab.live/admin/outbound_request` in your browser, and load the sample 
 
 (Follow [this guide](http://beta.moja-lab.live/3-guides/5_ttk_p2p.html)) and make the following changes:
 
@@ -188,7 +188,8 @@ If everything passes, then you know that the configuration is up and running ok!
 
 ## TODO:
 
-- update ml-boostrap to allow configuring multiple oracles
+- Update ml-bootstrap to allow configuring multiple oracles
+- Deploy the pisp demo server and get the Android app running
 
 ## Known Issues:
 

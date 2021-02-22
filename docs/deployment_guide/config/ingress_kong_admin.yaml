@@ -75,3 +75,7 @@ spec:
             backend:
               serviceName: mojaloop-simulator
               servicePort: 80
+          - path: /api/admin/oracle-consent/(.*)
+            backend:
+              serviceName: oracle-consent
+              servicePort: 3000
