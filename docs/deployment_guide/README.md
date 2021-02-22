@@ -167,10 +167,28 @@ npm run ml-bootstrap -- parties -c $BASE_DIR/pisp/docs/deployment_guide/config/m
 curl $ELB_URL/dfspa/simulator/repository/parties
 ```
 
+## Testing a P2P Transfer
+
+Now we can use
+
+go to `http://dog-ttk.alpha.moja-lab.live/admin/outbound_request` in your browser, and load the sample 
+
+(Follow [this guide](http://beta.moja-lab.live/3-guides/5_ttk_p2p.html)) and make the following changes:
+
+- `toIdValue`: `123456789`
+- `fromFspId`: `dog`
+- `toFspId`: `dfspa`
+- `payerfsp`: `dog`
+
+If everything passes, then you know that the configuration is up and running ok!
+
+## Testing the `CONSENT` Oracle
+
+
+
 ## TODO:
 
 - update ml-boostrap to allow configuring multiple oracles
-
 
 ## Known Issues:
 
