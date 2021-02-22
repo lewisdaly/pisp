@@ -357,8 +357,8 @@ ml-testing-toolkit-backend:
         PTA_ROLE: Application/PTA
     user_config.json:
       ADVANCED_FEATURES_ENABLED: true
-      # Endpoint of FSPIOP API... I think
-      CALLBACK_ENDPOINT: http://beta.moja-lab.live/api/fspiop
+      # CALLBACK_ENDPOINT: http://beta.moja-lab.live/api/fspiop
+      CALLBACK_ENDPOINT: http://192.168.0.91/api/fspiop
       CALLBACK_RESOURCE_ENDPOINTS:
         enabled: true
         endpoints:

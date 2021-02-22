@@ -95,21 +95,21 @@
     {
       id: 'pig',
       type: 'PISP',
-      fspiopCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
-      thirdpartyCallbackUrl: 'http://pig-ttk-backend-fspiop.beta.moja-lab.live',
+      fspiopCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5050',
+      thirdpartyCallbackUrl: 'http://pig-ttk-ml-testing-toolkit-backend:5050',
       parties: []
     },
-    // {
-    //   id: 'dog',
-    //   type: 'DFSP',
-    //   // TODO: this is a hack for now, but we actually need to query the admin-api
-    //   // to get this value before setting it :(
-    //   settlementAccountId: '34',
-    //   simulatorAdminUrl: 'http://dog-backend.beta.moja-lab.live',
-    //   fspiopCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
-    //   thirdpartyCallbackUrl: 'http://dog-ttk-backend-fspiop.beta.moja-lab.live',
-    //   parties: [
-    //   ]
-    // },
+    {
+      id: 'dog',
+      type: 'DFSP',
+      // TODO: this is a hack for now, but we actually need to query the admin-api
+      // to get this value before setting it :(
+      settlementAccountId: '10',
+      simulatorAdminUrl: 'n/a',
+      fspiopCallbackUrl: 'http://dog-ttk-ml-testing-toolkit-backend:5000',
+      thirdpartyCallbackUrl: 'http://dog-ttk-ml-testing-toolkit-backend:5000',
+      parties: [
+      ]
+    },
   ]
 }

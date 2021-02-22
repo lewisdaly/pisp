@@ -15,7 +15,7 @@ metadata:
   name: ttk
   annotations:
     kubernetes.io/ingress.class: kong
-    konghq.com/strip-path: "true"
+    # konghq.com/strip-path: "true"
     # This is required to rewrite paths to services that contain multiple endpoints, 
     # e.g. /participants and /parties are both on the account-lookup-service
     # konghq.com/plugins: ttk-rewrite
@@ -68,3 +68,10 @@ spec:
             backend:
               serviceName: dog-ttk-ml-testing-toolkit-backend
               servicePort: 5050
+    - host: dog-ttk-backend.alpha.moja-lab.live
+      http:
+        paths:
+          - path: /(.*)
+            backend:
+              serviceName: dog-ttk-ml-testing-toolkit-backend
+              servicePort: 5000 
