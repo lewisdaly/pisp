@@ -131,7 +131,17 @@ kubectl apply -f ./config/ingress_ttk.yaml
 # now we can test the ingresses:
 curl $ELB_URL/dfspa/simulator/repository/parties
 curl $ELB_URL/dfspa/sdk-scheme-adapter/health
-curl $ELB_URL/dfspa/thirdparty-scheme-adapter/health
+curl $ELB_URL/dfspa/thirdparty-scheme-adapter/inbound/health
+curl $ELB_URL/dfspa/thirdparty-scheme-adapter/outbound/health
+
+curl $ELB_URL/dfspb/simulator/repository/parties
+curl $ELB_URL/dfspb/sdk-scheme-adapter/health
+curl $ELB_URL/dfspb/thirdparty-scheme-adapter/inbound/health
+curl $ELB_URL/dfspb/thirdparty-scheme-adapter/outbound/health
+
+
+curl $ELB_URL/pispa/thirdparty-scheme-adapter/inbound/health
+curl $ELB_URL/pispa/thirdparty-scheme-adapter/outbound/health
 ...
 
 # for the ttk instances, we need to (sadly) configure out /etc/hosts - for example
@@ -203,8 +213,18 @@ curl -s -X GET $ELB_URL/api/admin/account-lookup-service/participants/CONSENT/12
 
 We should see an error in the dog ttk monitoring page - saying `Destination FSP Error`
 
+## Testing a PISP transfer from `pispa`
+
+```bash
+cd ../..
+
+npx jest ./test/e2e/tmp_live_PISP_3PR_Transfer.test.ts 
+```
+
 
 ## Testing a PISP transfer from pig ttk
+
+[ todo ]
 
 `pig` ttk a ttk registered as a "PISP"
 

@@ -53,7 +53,7 @@ const TestEnv: TestEnvType = {
     dfspbThirdpartySchemeAdapterOutbound: 'http://localhost:6006',
     pispSchemeAdapter: 'http://localhost:7002',
     pispThirdpartySchemeAdapterInbound: 'http://localhost:7005',
-    pispThirdpartySchemeAdapterOutbound: 'http://localhost:7006',
+    pispThirdpartySchemeAdapterOutbound: 'http://192.168.0.91/pispa/thirdparty-scheme-adapter/outbound',
     pispContractSchemeAdapter: 'http://localhost:8002',
     mlTestingToolkit: 'http://localhost:15000',
     mlTestingToolkitInbound: 'http://localhost:5050',
