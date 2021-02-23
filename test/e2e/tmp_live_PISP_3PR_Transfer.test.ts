@@ -1,12 +1,14 @@
 /* eslint-disable import/no-named-as-default-member */
 import TestEnv from './TestEnv'
 import axios from 'axios'
-// import expected from './expected'
+import expected from './expected'
+import { v4 } from 'uuid'
 // import { inspect } from 'util'
 
 // pisp transfer from Alice -> Bob
 describe('/thirdpartyTransaction: partyLookup->initiate->approve', (): void => {
-  const transactionRequestId = 'c51ec534-ee48-4575-b6a9-ead2955b8069'
+  const transactionRequestId = v4()
+  jest.setTimeout(10000)
   it.only('transactionRequestState should be ACCEPTED', async (): Promise<void> => {
     // LOOKUP PHASE
     // lookup for Bob
@@ -18,26 +20,12 @@ describe('/thirdpartyTransaction: partyLookup->initiate->approve', (): void => {
       transactionRequestId: transactionRequestId
     }
     const lookupURI = `${TestEnv.baseUrls.pispThirdpartySchemeAdapterOutbound}/thirdpartyTransaction/partyLookup`
-    try {
-      const lookupResponse = await axios.post(lookupURI, lookupRequest)
-      console.log('lookupResponse is', lookupResponse)
-    } catch (error) {
-      if (error.response) {
-        // Request made and server responded
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-    }
-    // expect(lookupResponse.status).toEqual(200)
-    // expect(lookupResponse.data.currentState).toEqual('partyLookupSuccess')
-    // expect(lookupResponse.data.party).toEqual(expected.Bob)
+    const lookupResponse = await axios.post(lookupURI, lookupRequest)
+    console.log('lookupResponse is', lookupResponse)
+
+    expect(lookupResponse.status).toEqual(200)
+    expect(lookupResponse.data.currentState).toEqual('partyLookupSuccess')
+    expect(lookupResponse.data.party).toEqual(expected.Bob)
 
     // // INITIATE PHASE
     // const initiateURI = `${TestEnv.baseUrls.pispThirdpartySchemeAdapterOutbound}/thirdpartyTransaction/${transactionRequestId}/initiate`
