@@ -29,7 +29,7 @@ export const Alice = {
 export const Bob = {
   partyIdInfo: {
     partyIdType: 'MSISDN',
-    partyIdentifier: '987654321',
+    partyIdentifier: '9876543210',
     fspId: 'dfspb'
   },
   personalInfo: {
@@ -37,20 +37,21 @@ export const Bob = {
     dateOfBirth: '1970-01-01'
   },
   name: 'Bob Babirusa',
-  accounts: {
-    account: [
-      {
-        address: 'moja.burgundy.76542756-f49gk439f-6a5f-543d-987654321',
-        currency: 'USD',
-        description: 'savings'
-      },
-      {
-        address: 'moja.burgundy.43638980-f49gk439f-6a5f-543d-987654321',
-        currency: 'USD',
-        description: 'checkings'
-      }
-    ]
-  }
+  // TODO: removing these for now...
+  // accounts: {
+  //   account: [
+  //     {
+  //       address: 'moja.burgundy.76542756-f49gk439f-6a5f-543d-987654321',
+  //       currency: 'USD',
+  //       description: 'savings'
+  //     },
+  //     {
+  //       address: 'moja.burgundy.43638980-f49gk439f-6a5f-543d-987654321',
+  //       currency: 'USD',
+  //       description: 'checkings'
+  //     }
+  //   ]
+  // }
 }
 
 export default {

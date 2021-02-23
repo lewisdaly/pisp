@@ -60,6 +60,14 @@ spec:
               servicePort: 4006
 
           # pispa - path based
+          - path: /pispa/simulator/(.*)
+            backend:
+              serviceName: pispa-mojaloop-simulator
+              servicePort: 3003
+          - path: /pispa/sdk-scheme-adapter/(.*)
+            backend:
+              serviceName: pispa-sdk-scheme-adapter
+              servicePort: 4000
           - path: /pispa/thirdparty-scheme-adapter/inbound/(.*)
             backend:
               serviceName: pispa-thirdparty-scheme-adapter

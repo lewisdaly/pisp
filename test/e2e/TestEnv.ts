@@ -67,7 +67,7 @@ const TestEnv: TestEnvType = {
     },
     bob: {
       idType: 'MSISDN',
-      idValue: '987654321'
+      idValue: '9876543210'
     }
   },
   parties: {

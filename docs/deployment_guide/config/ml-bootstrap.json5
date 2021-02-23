@@ -21,7 +21,7 @@
       settlementAccountId: '4',
       simulatorAdminUrl: 'http://192.168.0.91/dfspa/simulator',
       fspiopCallbackUrl: 'http://192.168.0.91/dfspa/sdk-scheme-adapter',
-      thirdpartyCallbackUrl: 'http://192.168.0.91/dfspa/thirdparty-scheme-adapter',
+      thirdpartyCallbackUrl: 'http://192.168.0.91/dfspa/thirdparty-scheme-adapter/inbound',
       parties: [
         {
           displayName: "Alice Alpaca",
@@ -75,6 +75,15 @@
           idValue: "218493479"
         },
         {
+          displayName: "Bob Babirusa",
+          firstName: "Bob",
+          middleName: "O",
+          lastName: "Babirusa",
+          dateOfBirth: "1970-01-01",
+          idType: "MSISDN",
+          idValue: "9876543210"
+        },
+        {
           displayName: "Belinda Bells",
           firstName: "Belinda",
           middleName: "B",
@@ -85,13 +94,14 @@
         }
       ]
     },
-    // {
-    //   id: 'pispa',
-    //   type: 'PISP',
-    //   // For PISP, 3p-scheme-adapter gets callbacks from switch
-    //   fspiopCallbackUrl: 'http://mojaloop-sim-pispa-sdk-scheme-adapter:4000',
-    //   thirdpartyCallbackUrl: 'http://mojaloop-sim-pispa-thirdparty-scheme-adapter:4000'
-    // },
+    {
+      id: 'pispa',
+      type: 'PISP',
+      // For PISP, 3p-scheme-adapter gets callbacks from switch
+      simulatorAdminUrl: 'http://192.168.0.91/pispa/simulator',
+      fspiopCallbackUrl: 'http://192.168.0.91/pispa/sdk-scheme-adapter',
+      thirdpartyCallbackUrl: 'http://192.168.0.91/pispa/thirdparty-scheme-adapter/inbound',
+    },
     // Testing toolkits:
     {
       id: 'pig',
