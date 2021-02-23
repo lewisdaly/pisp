@@ -28,6 +28,7 @@ PISP -> Switch ++: ""POST /consentRequests""\n\
   ""  FSIOP-Destination: dfspa""\n\
 ""{""\n\
   ""  consentRequestId: "456",""\n\
+  ""  userId: "username1234",""\n\
   ""  scopes: [ ""\n\
   ""    { **accountId: "dfsp.username.1234", // Required for OTP!**""\n\
   ""      actions: [ "accounts.transfer", "accounts.getBalance" ] },""\n\
