@@ -15,7 +15,7 @@
   participants: [
     {
       id: 'dfspa',
-      type: 'DFSP',
+      type: 'DFSP_SUPPORTING_PISP',
       // TODO: this is a hack for now, but we actually need to query the admin-api
       // to get this value before setting it :(
       settlementAccountId: '4',
